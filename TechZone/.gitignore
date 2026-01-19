@@ -1,0 +1,133 @@
+# ============================================================================
+# IDE AND EDITOR
+# ============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.metadata
+.recommenders/
+.apt_generated
+.springBeans
+.sts4-cache
+*.iws
+*.iml
+*.ipr
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ============================================================================
+# BUILD AND DEPENDENCIES
+# ============================================================================
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.m2/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
+
+# Gradle
+.gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+gradle/
+gradlew
+gradlew.bat
+
+# ============================================================================
+# JAVA
+# ============================================================================
+# Compiled class file
+*.class
+
+# Log file
+*.log
+*.log.*
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+# ============================================================================
+# SPRING BOOT & APPLICATION
+# ============================================================================
+HELP.md
+application-*.properties
+application-*.yml
+application.properties.local
+.env
+.env.local
+*.jks
+*.p12
+
+# ============================================================================
+# DATABASE
+# ============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.h2.db
+data/
+*.h2.db.mv.db
+*.h2.db.trace.db
+
+# ============================================================================
+# TEMPORARY AND OS FILES
+# ============================================================================
+.tmp/
+tmp/
+*.tmp
+.cache/
+.sass-cache/
+.vuepress/dist/
+.serverless/
+dist/
+node_modules/
+
+# OS
+Thumbs.db
+.AppleDouble
+.LSOverride
+._*
+
+# ============================================================================
+# MISC
+# ============================================================================
+.factorypath
+*.orig
+.history/
+.ionide/
