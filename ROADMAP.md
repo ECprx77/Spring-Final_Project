@@ -46,51 +46,51 @@
 
 ### Phase 3 : Sécurité et Authentification
 
-- [ ] **Spring Security**
-  - [ ] Configuration SecurityConfig
-  - [ ] Hachage des mots de passe (BCrypt)
-  - [ ] JWT (JSON Web Tokens) ou Sessions
-  - [ ] Authentication Provider
+- [x] **Spring Security**
+  - [x] Configuration SecurityConfig
+  - [x] Hachage des mots de passe (BCrypt)
+  - [x] JWT (JSON Web Tokens) avec JJWT 0.12.3
+  - [x] Authentication Provider personnalisé
 
-- [ ] **Endpoints d'authentification**
-  - [ ] POST /api/auth/register (inscription)
-  - [ ] POST /api/auth/login (connexion)
-  - [ ] POST /api/auth/logout (déconnexion)
-  - [ ] POST /api/auth/refresh-token (renouvellement token)
-  - [ ] GET /api/auth/me (profil utilisateur)
+- [x] **Endpoints d'authentification**
+  - [x] POST /api/auth/register (inscription)
+  - [x] POST /api/auth/login (connexion)
+  - [x] POST /api/auth/logout (déconnexion)
+  - [x] POST /api/auth/refresh-token (renouvellement token)
+  - [x] GET /api/auth/me (profil utilisateur)
 
-- [ ] **Gestion des rôles**
-  - [ ] ROLE_ADMIN
-  - [ ] ROLE_USER
-  - [ ] ROLE_CUSTOMER
+- [x] **Gestion des rôles**
+  - [x] ROLE_ADMIN (accès aux endpoints /api/admin/**)
+  - [x] ROLE_USER (utilisateur par défaut)
+  - [x] Support pour ROLE_CUSTOMER (optionnel)
 
 ### Phase 4 : CRUD Produits (Catégories)
 
-- [ ] **Repository et Service**
-  - [ ] CategoryRepository (JpaRepository)
-  - [ ] CategoryService (métiers)
-  - [ ] ProductRepository
-  - [ ] ProductService
+- [x] **Repository et Service**
+  - [x] CategoryRepository (JpaRepository)
+  - [x] CategoryService (métiers)
+  - [x] ProductRepository
+  - [x] ProductService
 
-- [ ] **Endpoints Admin**
-  - [ ] POST /api/admin/categories (créer)
-  - [ ] GET /api/admin/categories/{id} (détails)
-  - [ ] PUT /api/admin/categories/{id} (modifier)
-  - [ ] DELETE /api/admin/categories/{id} (supprimer)
-  - [ ] GET /api/admin/categories (liste avec pagination)
+- [x] **Endpoints Admin**
+  - [x] POST /api/admin/categories (créer)
+  - [x] GET /api/admin/categories/{id} (détails)
+  - [x] PUT /api/admin/categories/{id} (modifier)
+  - [x] DELETE /api/admin/categories/{id} (supprimer)
+  - [x] GET /api/admin/categories (liste avec pagination)
 
-- [ ] **Endpoints Admin Produits**
-  - [ ] POST /api/admin/products (créer)
-  - [ ] PUT /api/admin/products/{id} (modifier)
-  - [ ] DELETE /api/admin/products/{id} (supprimer)
-  - [ ] GET /api/admin/products (liste paginée)
-  - [ ] GET /api/admin/products/{id} (détails)
+- [x] **Endpoints Admin Produits**
+  - [x] POST /api/admin/products (créer)
+  - [x] PUT /api/admin/products/{id} (modifier)
+  - [x] DELETE /api/admin/products/{id} (supprimer)
+  - [x] GET /api/admin/products (liste paginée)
+  - [x] GET /api/admin/products/{id} (détails)
 
-- [ ] **Endpoints Client Produits**
-  - [ ] GET /api/products (catalogue)
-  - [ ] GET /api/products/{id} (détails)
-  - [ ] GET /api/products?category={catId} (filtrage)
-  - [ ] GET /api/products/search?q={query} (recherche)
+- [x] **Endpoints Client Produits**
+  - [x] GET /api/products (catalogue)
+  - [x] GET /api/products/{id} (détails)
+  - [x] GET /api/products/category/{catId} (filtrage)
+  - [x] GET /api/products/search?q={query} (recherche)
 
 ### Phase 5 : Gestion du Panier
 
