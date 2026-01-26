@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,6 +60,7 @@ public class SecurityConfig {
 
     /**
      * Configuration de la chaîne de filtres de sécurité
+     * Fusion : JWT authentication + H2 Console support
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -72,24 +74,28 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                    // Ressources publiques
+                    // Ressources publiques - Static files
                     .requestMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", 
                                     "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
                     // API d'authentification
                     .requestMatchers("/api/auth/**").permitAll()
                     // Swagger/OpenAPI
                     .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                    // H2 Console
+                    // H2 Console - Accès public (développement uniquement)
                     .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
                     // GET produits et catégories (public)
                     .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
-                    // Endpoints admin
+                    // Endpoints admin - Nécessite ROLE_ADMIN
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     // Autres requêtes nécessitent authentification
                     .anyRequest().authenticated()
             )
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+            // Permettre les frames pour H2 Console (header X-Frame-Options: SAMEORIGIN)
+            .headers(headers -> headers
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+            );
 
         // Ajouter le filtre JWT avant le filtre d'authentification standard
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
