@@ -15,34 +15,34 @@
 
 ### Phase 1 : Configuration initiale et Architecture
 
-- [ ] **Mise en place du projet Spring Boot**
-  - [ ] Configuration Maven (pom.xml)
-  - [ ] Structure des packages (controllers, services, repositories, entities)
-  - [ ] Configuration application.properties
-  - [ ] Dépendances Spring Data JPA, Spring Security, Spring Web
+- [x] **Mise en place du projet Spring Boot**
+  - [x] Configuration Maven (pom.xml)
+  - [x] Structure des packages (controllers, services, repositories, entities, **security**, dto) — *PDF*
+  - [x] Configuration application.properties
+  - [x] Dépendances Spring Data JPA, Spring Security, Spring Web
 
-- [ ] **Base de données**
-  - [ ] Conception MCD (Modèle Conceptuel de Données)
-  - [ ] Diagramme de classes UML
-  - [ ] Scripts de création tables
-  - [ ] Configuration H2/MySQL
+- [x] **Base de données**
+  - [x] Conception MCD (Modèle Conceptuel de Données)
+  - [x] Diagramme de classes UML
+  - [x] Scripts de création tables
+  - [x] Configuration H2/MySQL
+  - [x] **Données de test** — *PDF : 2 ADMIN, 3 USER, plusieurs catégories, 10–15 produits*
 
 ### Phase 2 : Modèles et Entités JPA
 
-- [ ] **Entités métier**
-  - [ ] User (Client/Admin)
-  - [ ] Product
-  - [ ] Category
-  - [ ] Cart / CartItem
-  - [ ] Order / OrderItem
-  - [ ] Review
-  - [ ] Payment
-  - [ ] Relationships et contraintes
+- [x] **Entités métier** (MCD PDF : Utilisateur, Rôle, Produit, Catégorie, Commande, LigneCommande)
+  - [x] User (Client/Admin)
+  - [x] Product
+  - [x] Category
+  - [x] Cart / CartItem
+  - [x] Order / OrderItem
+  - [x] Review *(optionnel, hors PDF)*
+  - [x] Relationships et contraintes
 
-- [ ] **Validations JPA**
-  - [ ] Annotations @NotNull, @NotBlank, @Email
-  - [ ] Constraints personnalisés si nécessaire
-  - [ ] Serialization/Deserialization
+- [x] **Validations JPA**
+  - [x] Annotations @NotNull, @NotBlank, @Email
+  - [x] Constraints personnalisés si nécessaire
+  - [x] Serialization/Deserialization
 
 ### Phase 3 : Sécurité et Authentification
 
@@ -87,10 +87,11 @@
   - [x] GET /api/admin/products/{id} (détails)
 
 - [x] **Endpoints Client Produits**
-  - [x] GET /api/products (catalogue)
+  - [x] GET /api/products (catalogue, **pagination** — *PDF USER + ADMIN*)
   - [x] GET /api/products/{id} (détails)
-  - [x] GET /api/products/category/{catId} (filtrage)
+  - [x] GET /api/products/category/{catId} (filtrage par catégorie)
   - [x] GET /api/products/search?q={query} (recherche)
+  - [ ] Filtres *PDF* : **en promotion**, **en stock uniquement** | Produit : **statut en stock/rupture**, **promotion** (booléen)
 
 ### Phase 5 : Gestion du Panier
 
@@ -104,31 +105,20 @@
 
 ### Phase 6 : Gestion des Commandes
 
-- [ ] **Order Service**
-  - [ ] Créer une commande (POST /api/orders)
-  - [ ] Historique commandes (GET /api/orders)
-  - [ ] Détails commande (GET /api/orders/{id})
-  - [ ] Annuler commande (PUT /api/orders/{id}/cancel)
-  - [ ] Statuts : PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
+- [x] **Order Service**
+  - [x] Créer une commande (POST /api/orders)
+  - [x] Historique commandes (GET /api/orders)
+  - [x] Détails commande (GET /api/orders/{id})
+  - [x] Annuler commande (PUT /api/orders/{id}/cancel)
+  - [x] Statuts : PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
 
-- [ ] **Endpoints Admin**
-  - [ ] GET /api/admin/orders (toutes les commandes)
-  - [ ] PUT /api/admin/orders/{id}/status (modifier statut)
-  - [ ] Exports et statistiques
+- [x] **Endpoints Admin**
+  - [x] GET /api/admin/orders (toutes les commandes)
+  - [x] PUT /api/admin/orders/{id}/status (modifier statut)
+  - [x] Exports et statistiques
 
-### Phase 7 : Système de Paiement
 
-- [ ] **Payment Service**
-  - [ ] Intégration Stripe / PayPal
-  - [ ] POST /api/payments (créer paiement)
-  - [ ] GET /api/payments/{orderId} (statut)
-  - [ ] Webhooks pour confirmations
-
-- [ ] **Gestion d'erreurs**
-  - [ ] Gestion des transactions
-  - [ ] Rollback automatique
-
-### Phase 8 : Avis et Commentaires
+### Phase 7 : Avis et Commentaires *(optionnel, hors PDF)*
 
 - [ ] **Review Service**
   - [ ] POST /api/reviews (créer avis)
@@ -137,16 +127,16 @@
   - [ ] DELETE /api/reviews/{id} (supprimer)
   - [ ] Système de notation (1-5 étoiles)
 
-### Phase 9 : Gestion Utilisateurs (Admin)
+### Phase 8 : Gestion Utilisateurs (Admin)
 
-- [ ] **Endpoints Admin**
-  - [ ] GET /api/admin/users (liste utilisateurs)
-  - [ ] GET /api/admin/users/{id} (détails)
-  - [ ] PUT /api/admin/users/{id} (modifier)
-  - [ ] DELETE /api/admin/users/{id} (supprimer)
-  - [ ] PUT /api/admin/users/{id}/role (changer rôle)
+- [x] **Endpoints Admin**
+  - [x] GET /api/admin/users (liste utilisateurs)
+  - [x] GET /api/admin/users/{id} (détails)
+  - [x] PUT /api/admin/users/{id} (modifier)
+  - [x] DELETE /api/admin/users/{id} (supprimer)
+  - [x] PUT /api/admin/users/{id}/role (changer rôle)
 
-### Phase 10 : Tests et Documentation
+### Phase 9 : Tests et Documentation
 
 - [ ] **Tests unitaires**
   - [ ] Services (@SpringBootTest, MockMvc)
@@ -159,9 +149,10 @@
   - [ ] Cas d'erreur
 
 - [ ] **Documentation**
-  - [ ] Swagger/Springdoc-OpenAPI (API docs)
+  - [ ] Swagger/Springdoc-OpenAPI (API docs) — *fonct. avancée PDF*
   - [ ] README backend
   - [ ] Guide d'installation et configuration
+  - [ ] **Collection Postman** (auth, admin, user, JWT) — *livrable PDF*
 
 ---
 
@@ -254,21 +245,16 @@
 
 ### Phase 6 : Processus de Commande
 
-- [ ] **Checkout (multi-étapes ou single page)**
-  - [ ] Étape 1 : Adresse de livraison
-  - [ ] Étape 2 : Méthode de livraison
-  - [ ] Étape 3 : Paiement
+- [ ] **Checkout** *(PDF : pas d’intégration paiement)*
+  - [ ] Adresse de livraison (si nécessaire)
+  - [ ] Récapitulatif panier
+  - [ ] Validation → création commande (passage de commande)
   - [ ] Validation à chaque étape
-
-- [ ] **Intégration paiement**
-  - [ ] Formulaire paiement (Stripe, PayPal)
-  - [ ] Gestion des erreurs
-  - [ ] Confirmation order
 
 - [ ] **Confirmation**
   - [ ] Page de confirmation
   - [ ] Email de confirmation (si possible)
-  - [ ] Lien vers commande
+  - [ ] Lien vers commande / historique
 
 ### Phase 7 : Espace Utilisateur
 
@@ -284,7 +270,7 @@
   - [ ] Changement mot de passe
   - [ ] Suppression de compte
 
-### Phase 8 : Avis et Évaluations
+### Phase 8 : Avis et Évaluations *(optionnel, hors PDF)*
 
 - [ ] **Système d'avis**
   - [ ] Formulaire d'avis sur produit
@@ -378,9 +364,8 @@
 - ✅ Authentification (login/register)
 - ✅ Catalogue produits
 - ✅ Panier
-- ✅ Commande
+- ✅ Commande *(sans intégration paiement — PDF)*
 - ✅ Interface admin basique (CRUD produits)
-- ✅ Système de paiement
 
 ### Should-Have (Important)
 - ✅ Avis/évaluations
@@ -400,11 +385,12 @@
 
 ## 🔗 Intégrations Externes
 
-- [ ] **Paiement** : Stripe / PayPal
-- [ ] **Email** : SendGrid / Gmail SMTP
-- [ ] **Stockage images** : AWS S3 / Firebase Storage
-- [ ] **Analytics** : Google Analytics
-- [ ] **Monitoring** : Sentry
+- [ ] **Email** : SendGrid / Gmail SMTP *(optionnel)*
+- [ ] **Stockage images** : AWS S3 / Firebase Storage *(optionnel)*
+- [ ] **Analytics** : Google Analytics *(optionnel)*
+- [ ] **Monitoring** : Sentry *(optionnel)*
+
+> **PDF :** Aucune intégration paiement (Stripe/PayPal) demandée.
 
 ---
 
@@ -416,11 +402,13 @@
 - **Commits réguliers** avec messages clairs
 - **Documentation à jour** au fur et à mesure
 
+**Fonctionnalités avancées PDF (2 à 5 au choix)** : Swagger/OpenAPI, **Docker** (Dockerfile), **Tests unitaires** (JUnit, Mockito), **Logs structurés** (connexion, commandes), **Design amélioré** (CSS, UX).
+
 ---
 
 ## 🎯 Dates Clés
 
-- **Soutenance** : vendredi 30/01/2025
+- **Soutenance** : vendredi 30/01/2025 — *PDF : 20 min présentation + 15 min questions*
 - **Livraison attendue** : Version stable et fonctionnelle
 
 ---
