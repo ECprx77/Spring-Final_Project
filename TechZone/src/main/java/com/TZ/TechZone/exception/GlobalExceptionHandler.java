@@ -4,8 +4,10 @@ import com.TZ.TechZone.exceptions.ResourceNotFoundException;
 import com.TZ.TechZone.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -105,6 +107,46 @@ public class GlobalExceptionHandler {
         body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Gère le JSON malformé ou un Content-Type non supporté sur le corps (ex. form-urlencoded).
+     * Évite une 500 quand le client n'envoie pas application/json.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            WebRequest request) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Corps de requête invalide");
+        String msg = ex.getCause() != null && ex.getCause().getMessage() != null
+                ? ex.getCause().getMessage()
+                : ex.getMessage();
+        if (msg != null && msg.contains("Content-Type")) {
+            body.put("message", "Content-Type application/json requis. Envoyez un JSON valide (ex. {\"name\":\"...\", \"description\":\"...\"}).");
+        } else {
+            body.put("message", "JSON invalide ou malformé. Vérifiez le format (ex. {\"name\":\"Ma catégorie\", \"description\":\"...\"}).");
+        }
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Gère un Content-Type non supporté (ex. application/x-www-form-urlencoded).
+     */
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<?> handleHttpMediaTypeNotSupported(
+            HttpMediaTypeNotSupportedException ex,
+            WebRequest request) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
+        body.put("error", "Content-Type non supporté");
+        body.put("message", "Utilisez Content-Type: application/json et un corps JSON (ex. {\"name\":\"Ma catégorie\", \"description\":\"...\"}).");
+
+        return new ResponseEntity<>(body, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     /**

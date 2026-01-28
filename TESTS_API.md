@@ -384,6 +384,81 @@ curl -X DELETE http://localhost:8080/api/admin/products/5 \
 
 ---
 
+## 👥 Gestion des utilisateurs (Phase 8 – Admin)
+
+*Tous ces endpoints nécessitent un token **ADMIN** (`Authorization: Bearer $TOKEN`).*
+
+### Lister les utilisateurs (admin)
+
+```bash
+curl -X GET "http://localhost:8080/api/admin/users?page=0&size=10&sort=id,asc" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Réponse:** Page JSON (`content`, `totalElements`, etc.) avec des `UserDTO` (id, email, fullName, role).
+
+### Détails d'un utilisateur (admin)
+
+```bash
+curl -X GET http://localhost:8080/api/admin/users/1 \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Réponse:**
+```json
+{
+  "id": 1,
+  "email": "admin@example.com",
+  "fullName": "Admin User",
+  "role": { "id": 1, "name": "ADMIN" }
+}
+```
+
+### Modifier un utilisateur (admin)
+
+```bash
+curl -X PUT http://localhost:8080/api/admin/users/2 \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "updated@example.com",
+    "fullName": "Updated Name",
+    "password": "NewPass123"
+  }'
+```
+
+*Champs optionnels : `email`, `fullName`, `password`. Seuls les champs envoyés sont mis à jour.*
+
+### Changer le rôle d'un utilisateur (admin)
+
+```bash
+curl -X PUT http://localhost:8080/api/admin/users/2/role \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"role": "ADMIN"}'
+```
+
+*`role` : `USER` ou `ADMIN`. Un admin ne peut pas modifier son propre rôle.*
+
+### Supprimer un utilisateur (admin)
+
+```bash
+curl -X DELETE http://localhost:8080/api/admin/users/2 \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Réponse:**
+```json
+{
+  "success": true,
+  "message": "Utilisateur supprimé avec succès"
+}
+```
+
+*Un admin ne peut pas supprimer son propre compte.*
+
+---
+
 ## 🔄 Gestion des tokens
 
 ### Renouveler le token
@@ -563,9 +638,14 @@ curl -s "http://localhost:8080/api/products/search?query=laptop" | jq '.content[
 | `/api/admin/products` | POST | ✅ ADMIN | Admin |
 | `/api/admin/products/{id}` | PUT | ✅ ADMIN | Admin |
 | `/api/admin/products/{id}` | DELETE | ✅ ADMIN | Admin |
+| `/api/admin/users` | GET | ✅ ADMIN | Phase 8 |
+| `/api/admin/users/{id}` | GET | ✅ ADMIN | Phase 8 |
+| `/api/admin/users/{id}` | PUT | ✅ ADMIN | Phase 8 |
+| `/api/admin/users/{id}` | DELETE | ✅ ADMIN | Phase 8 |
+| `/api/admin/users/{id}/role` | PUT | ✅ ADMIN | Phase 8 |
 
 ---
 
 **TechZone - Tests API**
-**Version:** 1.0 (Phases 3-4)
-**Date:** 26/01/2026
+**Version:** 1.1 (Phases 3–4, 8)
+**Date:** 28/01/2026
