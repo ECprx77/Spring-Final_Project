@@ -20,7 +20,7 @@ import java.util.List;
  * Endpoints: /api/categories (public), /api/admin/categories (admin)
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 public class CategoryController {
 
     @Autowired

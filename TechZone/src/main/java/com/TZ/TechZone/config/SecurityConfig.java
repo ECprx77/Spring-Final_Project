@@ -78,8 +78,8 @@ public class SecurityConfig {
                     .requestMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", 
                                     "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js", 
                                     "/**/*.woff", "/**/*.woff2", "/**/*.ttf", "/**/*.eot").permitAll()
-                    // API d'authentification
-                    .requestMatchers("/api/auth/**").permitAll()
+                    // API d'authentification (context-path /api déjà appliqué)
+                    .requestMatchers("/auth/**").permitAll()
                     // Swagger/OpenAPI - toutes les variantes
                     .requestMatchers("/swagger-ui**", "/swagger-ui/**", "/swagger-resources/**",
                                     "/v3/api-docs**", "/v3/api-docs/**",
@@ -88,11 +88,11 @@ public class SecurityConfig {
                     // H2 Console - Accès public (développement uniquement)
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                    // GET produits et catégories (public)
-                    .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                    // GET produits et catégories (public) - context-path /api déjà appliqué
+                    .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                     // Endpoints admin - Nécessite ROLE_ADMIN
-                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     // Autres requêtes nécessitent authentification
                     .anyRequest().authenticated()
             )

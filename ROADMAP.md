@@ -94,13 +94,13 @@
 
 ### Phase 5 : Gestion du Panier
 
-- [ ] **Cart Service**
-  - [ ] Ajouter au panier (POST /api/cart/add)
-  - [ ] Retirer du panier (DELETE /api/cart/{itemId})
-  - [ ] Modifier quantité (PUT /api/cart/{itemId})
-  - [ ] Vider le panier (DELETE /api/cart)
-  - [ ] Récupérer le panier (GET /api/cart)
-  - [ ] Calcul total automatique
+- [x] **Cart Service**
+  - [x] Ajouter au panier (POST /api/cart/add)
+  - [x] Retirer du panier (DELETE /api/cart/{itemId})
+  - [x] Modifier quantité (PUT /api/cart/{itemId})
+  - [x] Vider le panier (DELETE /api/cart)
+  - [x] Récupérer le panier (GET /api/cart)
+  - [x] Calcul total automatique
 
 ### Phase 6 : Gestion des Commandes
 

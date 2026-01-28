@@ -20,7 +20,7 @@ import java.util.List;
  * Endpoints: /api/products (public), /api/admin/products (admin)
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 public class ProductController {
 
     @Autowired

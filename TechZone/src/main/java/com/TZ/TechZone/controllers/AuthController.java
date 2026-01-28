@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * Endpoints: /api/auth/register, /api/auth/login, /api/auth/me, etc.
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
