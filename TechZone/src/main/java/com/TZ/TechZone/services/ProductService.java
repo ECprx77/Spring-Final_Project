@@ -1,11 +1,13 @@
 package com.TZ.TechZone.services;
 
 import com.TZ.TechZone.dto.ProductDTO;
+import com.TZ.TechZone.dto.ProductImageDTO;
 import com.TZ.TechZone.entities.Category;
 import com.TZ.TechZone.entities.Product;
 import com.TZ.TechZone.exceptions.ResourceNotFoundException;
 import com.TZ.TechZone.repositories.CategoryRepository;
 import com.TZ.TechZone.repositories.ProductRepository;
+import com.TZ.TechZone.repositories.ProductImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,9 @@ public class ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductImageRepository productImageRepository;
 
     /**
      * Crée un nouveau produit
@@ -157,6 +162,21 @@ public class ProductService {
         categoryDTO.setName(product.getCategory().getName());
         categoryDTO.setDescription(product.getCategory().getDescription());
         dto.setCategory(categoryDTO);
+
+        // Ajouter les images du produit
+        List<ProductImageDTO> imageDTOs = productImageRepository.findByProductIdOrderByDisplayOrderAsc(product.getId())
+                .stream()
+                .map(img -> {
+                    ProductImageDTO imgDTO = new ProductImageDTO();
+                    imgDTO.setId(img.getId());
+                    imgDTO.setImageUrl(img.getImageUrl());
+                    imgDTO.setIsPrimary(img.getIsPrimary());
+                    imgDTO.setDisplayOrder(img.getDisplayOrder());
+                    imgDTO.setCreatedAt(img.getCreatedAt());
+                    return imgDTO;
+                })
+                .collect(Collectors.toList());
+        dto.setImages(imageDTOs);
 
         dto.setCreatedAt(product.getCreatedAt());
         return dto;

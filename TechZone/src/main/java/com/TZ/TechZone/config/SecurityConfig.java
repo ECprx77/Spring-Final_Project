@@ -76,8 +76,10 @@ public class SecurityConfig {
                 authorizeRequests
                     // Ressources publiques - Static files
                     .requestMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", 
-                                    "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js", 
+                                    "/**/*.jpg", "/**/*.jpeg", "/**/*.webp", "/**/*.html", "/**/*.css", "/**/*.js", 
                                     "/**/*.woff", "/**/*.woff2", "/**/*.ttf", "/**/*.eot").permitAll()
+                    // Uploaded files (public read)
+                    .requestMatchers("/uploads/**").permitAll()
                     // API d'authentification (context-path /api déjà appliqué)
                     .requestMatchers("/auth/**").permitAll()
                     // Swagger/OpenAPI - toutes les variantes
