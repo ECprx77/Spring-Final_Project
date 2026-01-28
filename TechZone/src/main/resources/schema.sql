@@ -1,11 +1,11 @@
 -- TABLES
 
-CREATE TABLE roles (
+  CREATE TABLE IF NOT EXISTS roles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(20) UNIQUE NOT NULL -- 'ADMIN' or 'USER'
 );
 
-CREATE TABLE users (
+  CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
@@ -15,13 +15,13 @@ CREATE TABLE users (
   FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
-CREATE TABLE categories (
+  CREATE TABLE IF NOT EXISTS categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(120) UNIQUE NOT NULL,
   description CLOB
 );
 
-CREATE TABLE products (
+  CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(200) NOT NULL,
   description CLOB,
@@ -34,7 +34,7 @@ CREATE TABLE products (
   FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-CREATE TABLE product_images (
+  CREATE TABLE IF NOT EXISTS product_images (
   id INT AUTO_INCREMENT PRIMARY KEY,
   product_id INT NOT NULL,
   image_url VARCHAR(500) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE product_images (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
-CREATE TABLE orders (
+  CREATE TABLE IF NOT EXISTS orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -53,7 +53,7 @@ CREATE TABLE orders (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE order_lines (
+  CREATE TABLE IF NOT EXISTS order_lines (
   id INT AUTO_INCREMENT PRIMARY KEY,
   order_id INT NOT NULL,
   product_id INT NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE order_lines (
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE TABLE audit_logs (
+  CREATE TABLE IF NOT EXISTS audit_logs (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   action VARCHAR(30) NOT NULL CHECK (action IN (
     'LOGIN_SUCCESS','LOGIN_FAILED','ORDER_CREATED','ORDER_PAID','ORDER_CANCELLED'
