@@ -39,7 +39,7 @@ public class AuditLog {
     @Column(name = "user_agent", columnDefinition = "TEXT")
     private String userAgent;
 
-    @Column(columnDefinition = "JSONB")
+    @Column(columnDefinition = "TEXT")
     private String payload;
 
     @CreationTimestamp

@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Extraire le JWT du header Authorization
             String jwt = getJwtFromRequest(request);
 
-            // Valider et traiter le token
+            // Valider et traiter le token si present
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Integer userId = tokenProvider.getUserIdFromToken(jwt);
 
@@ -60,6 +60,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Continuer la chaîne de filtres
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        // Skip le filtrage pour les URLs publiques
+        return path.contains("/auth/") || 
+               path.contains("/swagger-ui") || 
+               path.contains("/v3/api-docs") || 
+               path.contains("/swagger-resources") ||
+               path.contains("/api/products") ||
+               path.contains("/api/categories") ||
+               path.contains("/h2-console") ||
+               path.equals("/") ||
+               path.equals("/favicon.ico");
     }
 
     /**

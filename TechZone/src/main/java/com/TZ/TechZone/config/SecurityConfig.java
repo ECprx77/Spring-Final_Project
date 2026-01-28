@@ -76,11 +76,15 @@ public class SecurityConfig {
                 authorizeRequests
                     // Ressources publiques - Static files
                     .requestMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", 
-                                    "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+                                    "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js", 
+                                    "/**/*.woff", "/**/*.woff2", "/**/*.ttf", "/**/*.eot").permitAll()
                     // API d'authentification
                     .requestMatchers("/api/auth/**").permitAll()
-                    // Swagger/OpenAPI
-                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    // Swagger/OpenAPI - toutes les variantes
+                    .requestMatchers("/swagger-ui**", "/swagger-ui/**", "/swagger-resources/**",
+                                    "/v3/api-docs**", "/v3/api-docs/**",
+                                    "/api/swagger-ui**", "/api/swagger-ui/**", "/api/swagger-resources/**",
+                                    "/api/v3/api-docs**", "/api/v3/api-docs/**").permitAll()
                     // H2 Console - Accès public (développement uniquement)
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
