@@ -66,15 +66,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
         // Skip le filtrage pour les URLs publiques
-        return path.contains("/auth/") || 
-               path.contains("/swagger-ui") || 
-               path.contains("/v3/api-docs") || 
-               path.contains("/swagger-resources") ||
-               path.contains("/api/products") ||
-               path.contains("/api/categories") ||
-               path.contains("/h2-console") ||
-               path.equals("/") ||
-               path.equals("/favicon.ico");
+        if (path.contains("/auth/") ||
+            path.contains("/swagger-ui") ||
+            path.contains("/v3/api-docs") ||
+            path.contains("/swagger-resources") ||
+            path.contains("/h2-console") ||
+            path.equals("/") ||
+            path.equals("/favicon.ico")) {
+            return true;
+        }
+        // GET /products et /categories sont publics : on peut skip. POST/PUT/DELETE (images, etc.) doivent être authentifiés.
+        if ("GET".equalsIgnoreCase(request.getMethod()) &&
+            (path.contains("/api/products") || path.contains("/api/categories"))) {
+            return true;
+        }
+        return false;
     }
 
     /**
