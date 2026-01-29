@@ -8,29 +8,22 @@
 -- ============================================
 -- USERS (2 ADMIN + 3 USER = 5 total)
 -- ============================================
--- All ADMIN passwords: "Admin123!"
--- All USER passwords: "User123!"
--- BCrypt hashes generated with strength 10
-
--- ADMIN 1: admin@techzone.com / Admin123!
-INSERT INTO users (email, password_hash, full_name, role_id, created_at) 
-VALUES ('admin@techzone.com', '$2a$10$N9qo8uLOickgx2ZMRZoMye1J4xJ4i8aN5qvz9dZHjP6Z9wJ.xK8qa', 'Admin Principal', 1, CURRENT_TIMESTAMP);
-
--- ADMIN 2: admin2@techzone.com / Admin123!
-INSERT INTO users (email, password_hash, full_name, role_id, created_at) 
-VALUES ('admin2@techzone.com', '$2a$10$N9qo8uLOickgx2ZMRZoMye1J4xJ4i8aN5qvz9dZHjP6Z9wJ.xK8qa', 'Admin Secondaire', 1, CURRENT_TIMESTAMP);
-
--- USER 1: user1@techzone.com / User123!
-INSERT INTO users (email, password_hash, full_name, role_id, created_at) 
-VALUES ('user1@techzone.com', '$2a$10$9Y8hJEVXq7jmQe/SqK2u8e1VHZj0HjQ7xJ3vZ8hJ8eN9qo8uLOick', 'Jean Dupont', 2, CURRENT_TIMESTAMP);
-
--- USER 2: user2@techzone.com / User123!
-INSERT INTO users (email, password_hash, full_name, role_id, created_at) 
-VALUES ('user2@techzone.com', '$2a$10$9Y8hJEVXq7jmQe/SqK2u8e1VHZj0HjQ7xJ3vZ8hJ8eN9qo8uLOick', 'Marie Martin', 2, CURRENT_TIMESTAMP);
-
--- USER 3: user3@techzone.com / User123!
-INSERT INTO users (email, password_hash, full_name, role_id, created_at) 
-VALUES ('user3@techzone.com', '$2a$10$9Y8hJEVXq7jmQe/SqK2u8e1VHZj0HjQ7xJ3vZ8hJ8eN9qo8uLOick', 'Pierre Bernard', 2, CURRENT_TIMESTAMP);
+-- NOTE: Users are NOT pre-loaded to avoid password hash issues
+-- But you can run the setup-test-users.sh script to do the following steps automatically :
+-- Register users via /api/auth/register on first startup:
+--
+-- ADMIN accounts to create:
+-- 1. Email: admin@techzone.com | Password: Admin123! | Then update role_id to 1 in H2 console
+-- 2. Email: admin2@techzone.com | Password: Admin123! | Then update role_id to 1 in H2 console
+--
+-- USER accounts to create:
+-- 3. Email: user1@techzone.com | Password: User123!
+-- 4. Email: user2@techzone.com | Password: User123!
+-- 5. Email: user3@techzone.com | Password: User123!
+--
+-- To make a user ADMIN after registration:
+-- 1. Access H2 Console: http://localhost:8080/api/h2-console
+-- 2. Run: UPDATE users SET role_id = 1 WHERE email = 'admin@techzone.com';
 
 -- ============================================
 -- CATEGORIES
@@ -125,27 +118,33 @@ INSERT INTO product_images (product_id, image_url, is_primary, display_order, cr
 -- ============================================
 -- SAMPLE ORDERS (2 commandes pour tester)
 -- ============================================
--- Commande 1: Jean Dupont (user1) - 2 produits
-INSERT INTO orders (user_id, status, total, order_date) VALUES (3, 'PENDING', 1309.98, CURRENT_TIMESTAMP);
-INSERT INTO order_lines (order_id, product_id, quantity, unit_price, line_total) VALUES
-(1, 1, 1, 1199.99, 1199.99),
-(1, 8, 1, 109.99, 109.99);
+-- NOTE: These are commented out because users are not pre-loaded
+-- After creating users via registration, you can manually create orders via the API
+-- or uncomment these and update user_id values to match your registered users
 
--- Commande 2: Marie Martin (user2) - 3 produits  
-INSERT INTO orders (user_id, status, total, order_date) VALUES (4, 'CONFIRMED', 729.97, CURRENT_TIMESTAMP);
-INSERT INTO order_lines (order_id, product_id, quantity, unit_price, line_total) VALUES
-(2, 3, 1, 699.99, 699.99),
-(2, 15, 1, 59.99, 59.99),
-(2, 11, 1, 279.99, 279.99);
+-- Example: Commande 1 - 2 produits (iPhone + Logitech Mouse)
+-- INSERT INTO orders (user_id, status, total, order_date) VALUES (1, 'PENDING', 1309.98, CURRENT_TIMESTAMP);
+-- INSERT INTO order_lines (order_id, product_id, quantity, unit_price, line_total) VALUES
+-- (1, 1, 1, 1199.99, 1199.99),
+-- (1, 8, 1, 109.99, 109.99);
+
+-- Example: Commande 2 - 3 produits (iPad + Echo Dot + AirPods)
+-- INSERT INTO orders (user_id, status, total, order_date) VALUES (2, 'CONFIRMED', 1039.97, CURRENT_TIMESTAMP);
+-- INSERT INTO order_lines (order_id, product_id, quantity, unit_price, line_total) VALUES
+-- (2, 3, 1, 699.99, 699.99),
+-- (2, 15, 1, 59.99, 59.99),
+-- (2, 11, 1, 279.99, 279.99);
 
 -- ============================================
 -- AUDIT LOGS (quelques exemples)
 -- ============================================
-INSERT INTO audit_logs (action, entity_type, entity_id, user_id, ip_address, user_agent, created_at) VALUES
-('LOGIN_SUCCESS', 'USER', 3, 3, '192.168.1.10', 'Mozilla/5.0', CURRENT_TIMESTAMP),
-('ORDER_CREATED', 'ORDER', 1, 3, '192.168.1.10', 'Mozilla/5.0', CURRENT_TIMESTAMP),
-('LOGIN_SUCCESS', 'USER', 4, 4, '192.168.1.20', 'Mozilla/5.0', CURRENT_TIMESTAMP),
-('ORDER_CREATED', 'ORDER', 2, 4, '192.168.1.20', 'Mozilla/5.0', CURRENT_TIMESTAMP);
+-- NOTE: Commented out since users are not pre-loaded
+-- After creating users, audit logs will be generated automatically by the application
+
+-- Example audit log entries (uncomment and update user_id/entity_id after user registration):
+-- INSERT INTO audit_logs (action, entity_type, entity_id, user_id, ip_address, user_agent, created_at) VALUES
+-- ('LOGIN_SUCCESS', 'USER', 1, 1, '192.168.1.10', 'Mozilla/5.0', CURRENT_TIMESTAMP),
+-- ('ORDER_CREATED', 'ORDER', 1, 1, '192.168.1.10', 'Mozilla/5.0', CURRENT_TIMESTAMP);
 
 -- ============================================
 -- End of data initialization
