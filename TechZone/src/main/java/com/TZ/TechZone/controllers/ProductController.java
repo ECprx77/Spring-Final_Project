@@ -94,6 +94,24 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    /**
+     * Récupère les produits en stock avec pagination (public)
+     * GET /api/products/in-stock?page=0&size=10&sort=name,asc
+     */
+    @GetMapping("/products/in-stock")
+    public ResponseEntity<Page<ProductDTO>> getProductsInStock(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection) {
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<ProductDTO> products = productService.getProductsInStock(pageable);
+        return ResponseEntity.ok(products);
+    }
+
     // ========== ADMIN ENDPOINTS ==========
 
     /**
