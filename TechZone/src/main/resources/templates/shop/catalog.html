@@ -66,7 +66,7 @@
         </div>
         <nav th:if="${productPage.totalPages > 1}" class="mt-8 flex justify-center gap-2">
           <a th:if="${productPage.hasPrevious()}" th:href="@{/app/shop(page=${productPage.number - 1}, size=${productPage.size}, categoryId=${selectedCategoryId}, promo=${filterPromo}, inStock=${filterInStock}, q=${searchQuery}, sortBy=${sortBy}, sortDirection=${sortDirection})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
-          <span class="px-3 py-1 text-neutral-600" th:text="'Page ' + (productPage.number + 1) + ' / ' + productPage.totalPages">Page 1 / 1</span>
+          <span class="px-3 py-1 text-neutral-600" th:text="${'Page ' + (productPage.number + 1) + ' / ' + productPage.totalPages}">Page 1 / 1</span>
           <a th:if="${productPage.hasNext()}" th:href="@{/app/shop(page=${productPage.number + 1}, size=${productPage.size}, categoryId=${selectedCategoryId}, promo=${filterPromo}, inStock=${filterInStock}, q=${searchQuery}, sortBy=${sortBy}, sortDirection=${sortDirection})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
         </nav>
       </div>
