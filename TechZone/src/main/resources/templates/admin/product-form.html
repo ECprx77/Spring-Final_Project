@@ -45,9 +45,18 @@
         </div>
         <div>
           <label for="image" class="block text-sm font-medium text-neutral-700 mb-1">Image du produit</label>
-          <div th:if="${product.id != null && product.images != null && !product.images.isEmpty()}" class="mb-3">
+          <div th:if="${product.id != null}" class="mb-3">
             <p class="text-sm text-neutral-600 mb-1">Image actuelle :</p>
-            <img th:src="${product.images[0].imageUrl}" alt="Image du produit" class="max-h-32 rounded-lg border border-neutral-200 object-cover"/>
+            <div th:if="${product.images != null and !product.images.isEmpty()}" class="flex items-center gap-3">
+              <img th:src="${product.images[0].imageUrl}" alt="Image du produit" class="max-h-32 rounded-lg border border-neutral-200 object-cover shrink-0"/>
+              <form th:action="@{/app/admin/products/{id}/image/remove(id=${product.id})}" method="post" class="shrink-0" onsubmit="return confirm('Supprimer cette image ?');">
+                <button type="submit" class="px-3 py-1.5 text-sm text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition">Supprimer</button>
+              </form>
+            </div>
+            <div th:if="${product.images == null or product.images.isEmpty()}" class="max-h-32 flex items-center justify-center rounded-lg border border-neutral-200 bg-neutral-100 text-neutral-400 text-6xl">
+              📦
+            </div>
+            <p th:if="${product.images == null or product.images.isEmpty()}" class="text-sm text-neutral-500 mt-1">Aucune image</p>
           </div>
           <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp" class="w-full text-sm text-neutral-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"/>
           <p class="text-neutral-500 text-xs mt-1">Formats acceptés : JPG, PNG, GIF, WebP. Max 5 Mo. <span th:if="${product.id != null}">Choisir un fichier remplace l'image actuelle.</span></p>

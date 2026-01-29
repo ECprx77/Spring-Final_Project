@@ -140,6 +140,17 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/admin/products/{id}/image/remove")
+    public String productImageRemove(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            productImageService.deleteAllImagesForProduct(id);
+            redirectAttributes.addFlashAttribute("message", "Image supprimée.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Impossible de supprimer l'image : " + e.getMessage());
+        }
+        return "redirect:/app/admin/products/" + id + "/edit";
+    }
+
     @PostMapping("/admin/products/{id}/delete")
     public String productDelete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
