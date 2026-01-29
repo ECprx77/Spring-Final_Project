@@ -154,9 +154,11 @@
   - [x] README backend
   - [x] Guide d'installation et configuration
   - [x] TESTING.md - Comprehensive testing documentation
-  - [ ] **Collection Postman** (auth, admin, user, JWT) — *livrable PDF*
+  - [x] **Collection Postman** (auth, admin, user, JWT) — *livrable PDF* ✅
 
 **Testing Status**: 59 comprehensive unit tests covering all core business logic. See `TechZone/TESTING.md` for complete documentation.
+
+**Postman Collection**: Complete API testing suite with 32 requests across 6 folders. Auto-saves JWT tokens. See `TechZone/POSTMAN_GUIDE.md` for usage.
 
 ---
 
