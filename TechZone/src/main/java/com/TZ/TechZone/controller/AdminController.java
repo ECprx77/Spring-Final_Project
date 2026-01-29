@@ -5,6 +5,7 @@ import com.TZ.TechZone.dto.OrderDTO;
 import com.TZ.TechZone.dto.ProductDTO;
 import com.TZ.TechZone.services.CategoryService;
 import com.TZ.TechZone.services.OrderService;
+import com.TZ.TechZone.services.ProductImageService;
 import com.TZ.TechZone.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/app")
@@ -31,6 +34,9 @@ public class AdminController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ProductImageService productImageService;
 
     @GetMapping("/admin")
     public String dashboard(Model model) {
@@ -75,6 +81,7 @@ public class AdminController {
 
     @PostMapping("/admin/products")
     public String productCreate(@Valid @ModelAttribute("product") ProductDTO product, BindingResult bindingResult,
+                                @RequestParam(value = "image", required = false) MultipartFile image,
                                 Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getAllCategoriesList());
@@ -83,7 +90,15 @@ public class AdminController {
         try {
             product.setStatus(product.getStatus() != null ? product.getStatus() : "en_stock");
             product.setIsPromo(product.getIsPromo() != null ? product.getIsPromo() : false);
-            productService.createProduct(product);
+            ProductDTO savedProduct = productService.createProduct(product);
+            if (image != null && !image.isEmpty()) {
+                try {
+                    productImageService.uploadImage(savedProduct.getId(), image, true);
+                } catch (IOException e) {
+                    redirectAttributes.addFlashAttribute("message", "Produit créé mais l'image n'a pas pu être enregistrée : " + e.getMessage());
+                    return "redirect:/app/admin/products";
+                }
+            }
             redirectAttributes.addFlashAttribute("message", "Produit créé.");
             return "redirect:/app/admin/products";
         } catch (Exception e) {
@@ -95,7 +110,9 @@ public class AdminController {
 
     @PostMapping("/admin/products/{id}")
     public String productUpdate(@PathVariable Integer id, @Valid @ModelAttribute("product") ProductDTO product,
-                               BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+                               BindingResult bindingResult,
+                               @RequestParam(value = "image", required = false) MultipartFile image,
+                               Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getAllCategoriesList());
             return "admin/product-form";
@@ -105,6 +122,15 @@ public class AdminController {
             product.setStatus(product.getStatus() != null ? product.getStatus() : "en_stock");
             product.setIsPromo(product.getIsPromo() != null ? product.getIsPromo() : false);
             productService.updateProduct(id, product);
+            if (image != null && !image.isEmpty()) {
+                try {
+                    productImageService.deleteAllImagesForProduct(id);
+                    productImageService.uploadImage(id, image, true);
+                } catch (IOException e) {
+                    redirectAttributes.addFlashAttribute("message", "Produit mis à jour mais l'image n'a pas pu être remplacée : " + e.getMessage());
+                    return "redirect:/app/admin/products";
+                }
+            }
             redirectAttributes.addFlashAttribute("message", "Produit mis à jour.");
             return "redirect:/app/admin/products";
         } catch (Exception e) {

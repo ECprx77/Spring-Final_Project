@@ -38,8 +38,8 @@
         <div th:if="${!productPage.empty}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <article th:each="product : ${productPage.content}" class="bg-white rounded-lg border border-neutral-200 overflow-hidden hover:shadow-md transition">
             <a th:href="@{/app/shop/products/{id}(id=${product.id})}" class="block">
-              <div class="aspect-square bg-neutral-100 flex items-center justify-center">
-                <span th:if="${product.images != null and !product.images.isEmpty()}" class="text-4xl text-neutral-400">🖼</span>
+              <div class="aspect-square bg-neutral-100 flex items-center justify-center overflow-hidden">
+                <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="${product.images[0].imageUrl}" th:alt="${product.name}" class="w-full h-full object-cover"/>
                 <span th:if="${product.images == null or product.images.isEmpty()}" class="text-4xl text-neutral-400">📦</span>
               </div>
               <div class="p-4">

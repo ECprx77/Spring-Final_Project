@@ -77,6 +77,24 @@ public class ProductImageService {
         productImageRepository.delete(image);
     }
 
+    /**
+     * Supprime toutes les images d'un produit (fichiers + en base).
+     * Utile pour remplacer l'image principale lors d'une modification.
+     */
+    @Transactional
+    public void deleteAllImagesForProduct(Integer productId) throws IOException {
+        List<ProductImage> images = productImageRepository.findByProductIdOrderByDisplayOrderAsc(productId);
+        for (ProductImage image : images) {
+            String filename = extractFilenameFromUrl(image.getImageUrl());
+            try {
+                fileStorageService.deleteFile(filename);
+            } catch (IOException ignored) {
+                // Fichier déjà absent ou autre erreur, on continue la suppression en base
+            }
+            productImageRepository.delete(image);
+        }
+    }
+
     @Transactional
     public ProductImageDTO setPrimaryImage(Integer imageId) {
         ProductImage image = productImageRepository.findById(imageId)
