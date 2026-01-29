@@ -101,6 +101,22 @@ public class ProductService {
     }
 
     /**
+     * Récupère les produits en promotion avec pagination
+     */
+    public Page<ProductDTO> getPromoProducts(Pageable pageable) {
+        return productRepository.findByIsPromoTrue(pageable)
+                .map(this::convertToDTO);
+    }
+
+    /**
+     * Récupère les produits en stock uniquement avec pagination
+     */
+    public Page<ProductDTO> getProductsInStock(Pageable pageable) {
+        return productRepository.findByStatus(Product.ProductStatus.en_stock, pageable)
+                .map(this::convertToDTO);
+    }
+
+    /**
      * Met à jour un produit
      */
     public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {

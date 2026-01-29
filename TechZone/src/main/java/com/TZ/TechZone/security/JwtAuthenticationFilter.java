@@ -64,33 +64,51 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        // Skip le filtrage pour les URLs publiques
+        String path = request.getServletPath();
+        if (path == null) path = request.getRequestURI();
+        // Skip le filtrage pour les URLs publiques (API, Swagger, H2, racine)
         if (path.contains("/auth/") ||
             path.contains("/swagger-ui") ||
             path.contains("/v3/api-docs") ||
             path.contains("/swagger-resources") ||
             path.contains("/h2-console") ||
             path.equals("/") ||
-            path.equals("/favicon.ico")) {
+            path.equals("/favicon.ico") ||
+            path.startsWith("/login") ||
+            path.startsWith("/register")) {
             return true;
         }
-        // GET /products et /categories sont publics : on peut skip. POST/PUT/DELETE (images, etc.) doivent être authentifiés.
+        // Ne skip que login et register (pages où on n'a pas encore de token).
+        // Pour toutes les autres pages /app/* on exécute le filtre pour lire le cookie
+        // et maintenir la session (catalogue, admin, panier, etc.).
+        if (path.equals("/app/login") || path.equals("/app/register")) {
+            return true;
+        }
+        // GET /products et /categories (API REST uniquement, pas les pages /app/admin/*)
         if ("GET".equalsIgnoreCase(request.getMethod()) &&
-            (path.contains("/api/products") || path.contains("/api/categories"))) {
+            !path.startsWith("/app") &&
+            (path.contains("/products") || path.contains("/categories"))) {
             return true;
         }
         return false;
     }
 
     /**
-     * Extrait le token JWT du header Authorization
-     * Format attendu: "Bearer <token>"
+     * Extrait le token JWT du header Authorization ou du cookie "token"
+     * Format header: "Bearer <token>"
      */
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
+        }
+        jakarta.servlet.http.Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (jakarta.servlet.http.Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName()) && StringUtils.hasText(cookie.getValue())) {
+                    return cookie.getValue();
+                }
+            }
         }
         return null;
     }

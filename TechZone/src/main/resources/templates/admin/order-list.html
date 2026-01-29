@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{layout :: layout(~{::main})}">
+<body>
+  <th:block th:fragment="main">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-2xl font-bold text-neutral-900 mb-6">Commandes</h1>
+      <p th:if="${message}" class="mb-4 p-3 bg-green-50 text-green-800 rounded-lg text-sm" th:text="${message}"></p>
+      <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
+        <table class="min-w-full divide-y divide-neutral-200">
+          <thead class="bg-neutral-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">ID</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Date</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Client</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Statut</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Total</th>
+              <th class="px-4 py-2 text-right text-sm font-semibold text-neutral-900">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-200">
+            <tr th:each="o : ${orderPage.content}" class="bg-white">
+              <td class="px-4 py-2 text-sm font-medium text-neutral-900" th:text="${o.id}">1</td>
+              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${o.orderDate != null ? #temporals.format(o.orderDate, 'dd/MM/yyyy HH:mm') : '-'}">-</td>
+              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${o.user != null ? o.user.fullName : '-'}">-</td>
+              <td class="px-4 py-2 text-sm" th:classappend="${o.status == 'CANCELLED'} ? 'text-red-600' : 'text-neutral-700'" th:text="${o.status}">PENDING</td>
+              <td class="px-4 py-2 text-sm font-medium" th:text="${#numbers.formatDecimal(o.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</td>
+              <td class="px-4 py-2 text-right text-sm">
+                <a th:href="@{/app/admin/orders/{id}(id=${o.id})}" class="text-brand-600 hover:text-brand-700">Détail</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <nav th:if="${orderPage.totalPages > 1}" class="mt-4 flex justify-center gap-2">
+        <a th:if="${orderPage.hasPrevious()}" th:href="@{/app/admin/orders(page=${orderPage.number - 1}, size=${orderPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
+        <span class="px-3 py-1 text-neutral-600" th:text="'Page ' + (orderPage.number + 1) + ' / ' + orderPage.totalPages">Page 1 / 1</span>
+        <a th:if="${orderPage.hasNext()}" th:href="@{/app/admin/orders(page=${orderPage.number + 1}, size=${orderPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
+      </nav>
+    </div>
+  </th:block>
+</body>
+</html>

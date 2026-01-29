@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{layout :: layout(~{::main})}">
+<body>
+  <th:block th:fragment="main">
+    <div class="text-center py-12">
+      <h1 class="text-3xl font-bold text-neutral-900 mb-4">Bienvenue sur TechZone</h1>
+      <p class="text-neutral-600 mb-8 max-w-xl mx-auto">
+        Découvrez notre catalogue de produits high-tech : PC, smartphones, accessoires.
+      </p>
+      <a th:href="@{/app/shop}" class="inline-flex items-center px-6 py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">
+        Voir le catalogue
+      </a>
+    </div>
+  </th:block>
+</body>
+</html>
