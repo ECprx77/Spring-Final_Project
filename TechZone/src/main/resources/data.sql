@@ -77,17 +77,50 @@ INSERT INTO products (name, description, price, status, is_promo, category_id, c
 ('Amazon Echo Dot (5ème gen)', 'Enceinte intelligente Alexa compacte', 59.99, 'en_stock', false, 5, CURRENT_TIMESTAMP);
 
 -- ============================================
+-- ============================================
 -- PRODUCT IMAGES (exemples pour quelques produits)
 -- ============================================
--- Note: Ces URLs sont des exemples. En production, utilisez de vraies images.
+-- Using placeholder images from picsum.photos (free service with random images)
+-- These will work immediately without needing to upload files
+--
+-- ALTERNATIVES FOR PRODUCTION:
+-- 1. Local files: '/uploads/products/filename.jpg' (upload via API or place manually)
+-- 2. CDN URLs: 'https://your-cdn.com/images/product.jpg'
+-- 3. Placeholder services: 'https://via.placeholder.com/400x400/007bff/ffffff?text=Product+Name'
+-- 4. Use the API: POST /api/admin/products/{id}/images (requires ADMIN token)
+--
 INSERT INTO product_images (product_id, image_url, is_primary, display_order, created_at) VALUES
-(1, '/uploads/products/iphone-15-pro-1.jpg', true, 1, CURRENT_TIMESTAMP),
-(1, '/uploads/products/iphone-15-pro-2.jpg', false, 2, CURRENT_TIMESTAMP),
-(2, '/uploads/products/samsung-s24-ultra-1.jpg', true, 1, CURRENT_TIMESTAMP),
-(3, '/uploads/products/ipad-air-m2-1.jpg', true, 1, CURRENT_TIMESTAMP),
-(6, '/uploads/products/macbook-pro-m3-1.jpg', true, 1, CURRENT_TIMESTAMP),
-(10, '/uploads/products/sony-wh1000xm5-1.jpg', true, 1, CURRENT_TIMESTAMP),
-(13, '/uploads/products/ps5-1.jpg', true, 1, CURRENT_TIMESTAMP);
+-- iPhone 15 Pro (product_id=1) - 2 images
+(1, 'https://picsum.photos/seed/iphone15pro1/400/400', true, 1, CURRENT_TIMESTAMP),
+(1, 'https://picsum.photos/seed/iphone15pro2/400/400', false, 2, CURRENT_TIMESTAMP),
+-- Samsung Galaxy S24 Ultra (product_id=2)
+(2, 'https://picsum.photos/seed/galaxys24/400/400', true, 1, CURRENT_TIMESTAMP),
+-- iPad Air M2 (product_id=3)
+(3, 'https://picsum.photos/seed/ipadair/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Google Pixel 8 Pro (product_id=4)
+(4, 'https://picsum.photos/seed/pixel8pro/400/400', true, 1, CURRENT_TIMESTAMP),
+-- OnePlus 12 (product_id=5)
+(5, 'https://picsum.photos/seed/oneplus12/400/400', true, 1, CURRENT_TIMESTAMP),
+-- MacBook Pro M3 (product_id=6)
+(6, 'https://picsum.photos/seed/macbookpro/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Dell XPS 15 (product_id=7)
+(7, 'https://picsum.photos/seed/dellxps15/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Logitech MX Master 3S (product_id=8)
+(8, 'https://picsum.photos/seed/logitechmx/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Keychron K8 Pro (product_id=9)
+(9, 'https://picsum.photos/seed/keychron/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Sony WH-1000XM5 (product_id=10)
+(10, 'https://picsum.photos/seed/sonywh1000xm5/400/400', true, 1, CURRENT_TIMESTAMP),
+-- AirPods Pro (product_id=11)
+(11, 'https://picsum.photos/seed/airpodspro/400/400', true, 1, CURRENT_TIMESTAMP),
+-- JBL Flip 6 (product_id=12)
+(12, 'https://picsum.photos/seed/jblflip6/400/400', true, 1, CURRENT_TIMESTAMP),
+-- PlayStation 5 (product_id=13)
+(13, 'https://picsum.photos/seed/ps5/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Xbox Series X (product_id=14)
+(14, 'https://picsum.photos/seed/xbox/400/400', true, 1, CURRENT_TIMESTAMP),
+-- Amazon Echo Dot (product_id=15)
+(15, 'https://picsum.photos/seed/echodot/400/400', true, 1, CURRENT_TIMESTAMP);
 
 -- ============================================
 -- SAMPLE ORDERS (2 commandes pour tester)
