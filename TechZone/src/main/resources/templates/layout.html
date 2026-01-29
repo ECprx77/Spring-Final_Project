@@ -4,25 +4,77 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title th:text="${pageTitle != null ? pageTitle + ' - TechZone' : 'TechZone'}">TechZone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            brand: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1' },
-            neutral: { 50: '#fafafa', 100: '#f5f5f5', 800: '#262626', 900: '#171717' }
+            dark: {
+              900: '#0a1628',
+              800: '#0f2744',
+              700: '#153050',
+              600: '#1a3a5c',
+              500: '#2a4a6e'
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1'
+            },
+            surface: {
+              DEFAULT: 'rgba(15, 39, 68, 0.6)',
+              card: '#132238'
+            }
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif']
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.6s ease-out forwards',
+            'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+            'slide-in': 'slideIn 0.4s ease-out forwards'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            slideIn: {
+              '0%': { opacity: '0', transform: 'translateX(-10px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' }
+            }
           }
         }
       }
     }
   </script>
+  <style type="text/css">
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; }
+    .animate-delay-100 { animation-delay: 100ms; }
+    .animate-delay-200 { animation-delay: 200ms; }
+    .animate-delay-300 { animation-delay: 300ms; }
+    .animate-delay-400 { animation-delay: 400ms; }
+  </style>
 </head>
-<body class="min-h-screen bg-neutral-50 text-neutral-900 antialiased flex flex-col">
+<body class="min-h-screen bg-dark-900 text-slate-100 antialiased flex flex-col">
   <header th:replace="~{fragments/header :: header}"></header>
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-    <div th:if="${message}" class="mb-4 p-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm" role="alert" th:text="${message}"></div>
-    <div th:if="${orderSuccess}" class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm" role="status" th:text="${orderSuccess}"></div>
+  <main class="flex-1 w-full">
+    <div th:if="${message}" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <div class="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-sm" role="alert" th:text="${message}"></div>
+    </div>
+    <div th:if="${orderSuccess}" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-sm" role="status" th:text="${orderSuccess}"></div>
+    </div>
     <th:block th:replace="${content}"></th:block>
   </main>
   <footer th:replace="~{fragments/footer :: footer}"></footer>

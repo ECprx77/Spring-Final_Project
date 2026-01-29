@@ -3,20 +3,20 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-2xl mx-auto">
-      <h1 class="text-2xl font-bold text-neutral-900 mb-6">Récapitulatif de la commande</h1>
-      <ul class="divide-y divide-neutral-200 border border-neutral-200 rounded-lg overflow-hidden mb-6">
-        <li th:each="item : ${cart.items}" class="p-4 flex justify-between bg-white">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">Récapitulatif de la commande</h1>
+      <ul class="divide-y divide-dark-600 border border-dark-600/40 rounded-xl overflow-hidden mb-6 bg-dark-800/60">
+        <li th:each="item : ${cart.items}" class="p-4 flex justify-between text-slate-100">
           <span class="font-medium" th:text="${item.productName}">Produit</span>
-          <span th:text="${item.quantity} + ' × ' + ${#numbers.formatDecimal(item.unitPrice, 1, 'COMMA', 2, 'POINT')} + ' € = ' + ${#numbers.formatDecimal(item.lineTotal, 1, 'COMMA', 2, 'POINT')} + ' €'">0,00 €</span>
+          <span class="text-slate-400" th:text="${item.quantity} + ' × ' + ${#numbers.formatDecimal(item.unitPrice, 1, 'COMMA', 2, 'POINT')} + ' € = ' + ${#numbers.formatDecimal(item.lineTotal, 1, 'COMMA', 2, 'POINT')} + ' €'">0,00 €</span>
         </li>
       </ul>
-      <div class="flex justify-between text-lg font-semibold mb-8">
+      <div class="flex justify-between text-lg font-semibold mb-8 text-slate-100">
         <span>Total</span>
-        <span class="text-brand-600" th:text="${cart.total != null ? #numbers.formatDecimal(cart.total, 1, 'COMMA', 2, 'POINT') + ' €' : '0,00 €'}">0,00 €</span>
+        <span class="text-accent-400" th:text="${cart.total != null ? #numbers.formatDecimal(cart.total, 1, 'COMMA', 2, 'POINT') + ' €' : '0,00 €'}">0,00 €</span>
       </div>
       <form th:action="@{/app/shop/checkout}" method="post" id="checkout-form">
-        <button type="submit" id="checkout-btn" class="w-full py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition disabled:opacity-70 disabled:cursor-not-allowed" aria-label="Confirmer la commande">Confirmer la commande</button>
+        <button type="submit" id="checkout-btn" class="w-full py-3 bg-accent-600 text-white font-medium rounded-lg hover:bg-accent-500 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed" aria-label="Confirmer la commande">Confirmer la commande</button>
       </form>
       <script th:inline="javascript">
         document.getElementById('checkout-form')?.addEventListener('submit', function() {
@@ -24,7 +24,7 @@
           if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
         });
       </script>
-      <a th:href="@{/app/shop/cart}" class="block mt-4 text-center text-sm text-neutral-600 hover:text-neutral-900">Retour au panier</a>
+      <a th:href="@{/app/shop/cart}" class="block mt-4 text-center text-sm text-slate-400 hover:text-accent-400 transition-colors">Retour au panier</a>
     </div>
   </th:block>
 </body>

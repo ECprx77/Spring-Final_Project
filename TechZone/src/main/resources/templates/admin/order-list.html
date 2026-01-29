@@ -3,41 +3,41 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-2xl font-bold text-neutral-900 mb-6">Commandes</h1>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">Commandes</h1>
       <p class="mb-4">
-        <a th:href="@{/app/admin/orders/export}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition" download>Export CSV</a>
+        <a th:href="@{/app/admin/orders/export}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-500 transition-colors" download>Export CSV</a>
       </p>
-      <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
-        <table class="min-w-full divide-y divide-neutral-200">
-          <thead class="bg-neutral-50">
+      <div class="bg-dark-800/60 border border-dark-600/40 rounded-xl overflow-hidden">
+        <table class="min-w-full divide-y divide-dark-600">
+          <thead class="bg-dark-700/60">
             <tr>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">ID</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Date</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Client</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Statut</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Total</th>
-              <th class="px-4 py-2 text-right text-sm font-semibold text-neutral-900">Actions</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">ID</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Date</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Client</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Statut</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Total</th>
+              <th class="px-4 py-3 text-right text-sm font-semibold text-slate-200">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-neutral-200">
-            <tr th:each="o : ${orderPage.content}" class="bg-white">
-              <td class="px-4 py-2 text-sm font-medium text-neutral-900" th:text="${o.id}">1</td>
-              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${o.orderDate != null ? #temporals.format(o.orderDate, 'dd/MM/yyyy HH:mm') : '-'}">-</td>
-              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${o.user != null ? o.user.fullName : '-'}">-</td>
-              <td class="px-4 py-2 text-sm" th:classappend="${o.status == 'CANCELLED'} ? 'text-red-600' : 'text-neutral-700'" th:text="${o.status}">PENDING</td>
-              <td class="px-4 py-2 text-sm font-medium" th:text="${#numbers.formatDecimal(o.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</td>
-              <td class="px-4 py-2 text-right text-sm">
-                <a th:href="@{/app/admin/orders/{id}(id=${o.id})}" class="text-brand-600 hover:text-brand-700">Détail</a>
+          <tbody class="divide-y divide-dark-600">
+            <tr th:each="o : ${orderPage.content}" class="hover:bg-dark-700/40 transition-colors">
+              <td class="px-4 py-3 text-sm font-medium text-slate-100" th:text="${o.id}">1</td>
+              <td class="px-4 py-3 text-sm text-slate-400" th:text="${o.orderDate != null ? #temporals.format(o.orderDate, 'dd/MM/yyyy HH:mm') : '-'}">-</td>
+              <td class="px-4 py-3 text-sm text-slate-400" th:text="${o.user != null ? o.user.fullName : '-'}">-</td>
+              <td class="px-4 py-3 text-sm" th:classappend="${o.status == 'CANCELLED'} ? 'text-red-400' : 'text-slate-300'" th:text="${o.status}">PENDING</td>
+              <td class="px-4 py-3 text-sm font-medium text-accent-400" th:text="${#numbers.formatDecimal(o.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</td>
+              <td class="px-4 py-3 text-right text-sm">
+                <a th:href="@{/app/admin/orders/{id}(id=${o.id})}" class="text-accent-400 hover:text-accent-300 transition-colors">Détail</a>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <nav th:if="${orderPage.totalPages > 1}" class="mt-4 flex justify-center gap-2">
-        <a th:if="${orderPage.hasPrevious()}" th:href="@{/app/admin/orders(page=${orderPage.number - 1}, size=${orderPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
-        <span class="px-3 py-1 text-neutral-600" th:text="'Page ' + (orderPage.number + 1) + ' / ' + orderPage.totalPages">Page 1 / 1</span>
-        <a th:if="${orderPage.hasNext()}" th:href="@{/app/admin/orders(page=${orderPage.number + 1}, size=${orderPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
+        <a th:if="${orderPage.hasPrevious()}" th:href="@{/app/admin/orders(page=${orderPage.number - 1}, size=${orderPage.size})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Préc.</a>
+        <span class="px-4 py-2 text-slate-500" th:text="'Page ' + (orderPage.number + 1) + ' / ' + orderPage.totalPages">Page 1 / 1</span>
+        <a th:if="${orderPage.hasNext()}" th:href="@{/app/admin/orders(page=${orderPage.number + 1}, size=${orderPage.size})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Suiv.</a>
       </nav>
     </div>
   </th:block>

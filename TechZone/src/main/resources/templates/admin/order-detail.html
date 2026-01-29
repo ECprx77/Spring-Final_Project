@@ -3,39 +3,39 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-3xl mx-auto">
-      <a th:href="@{/app/admin/orders}" class="text-sm text-brand-600 hover:text-brand-700 mb-4 inline-block">← Retour aux commandes</a>
-      <h1 class="text-2xl font-bold text-neutral-900 mb-6" th:text="'Commande #' + ${order.id}">Commande #1</h1>
-      <p th:if="${message}" class="mb-4 p-3 bg-green-50 text-green-800 rounded-lg text-sm" th:text="${message}"></p>
-      <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden mb-6">
-        <div class="p-4 border-b border-neutral-200 flex flex-wrap justify-between gap-2">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <a th:href="@{/app/admin/orders}" class="text-sm text-accent-400 hover:text-accent-300 mb-4 inline-block transition-colors">← Retour aux commandes</a>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-6" th:text="'Commande #' + ${order.id}">Commande #1</h1>
+      <p th:if="${message}" class="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-sm" th:text="${message}"></p>
+      <div class="bg-dark-800/60 border border-dark-600/40 rounded-xl overflow-hidden mb-6">
+        <div class="p-4 border-b border-dark-600 flex flex-wrap justify-between gap-2">
           <div>
-            <span class="text-neutral-600 text-sm">Date : </span>
-            <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">-</span>
+            <span class="text-slate-400 text-sm">Date : </span>
+            <span class="text-slate-100" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">-</span>
           </div>
           <div>
-            <span class="text-neutral-600 text-sm">Client : </span>
-            <span th:text="${order.user != null ? order.user.fullName + ' (' + order.user.email + ')' : '-'}">-</span>
+            <span class="text-slate-400 text-sm">Client : </span>
+            <span class="text-slate-100" th:text="${order.user != null ? order.user.fullName + ' (' + order.user.email + ')' : '-'}">-</span>
           </div>
         </div>
-        <ul class="divide-y divide-neutral-200">
-          <li th:each="line : ${order.orderLines}" class="p-4 flex justify-between">
+        <ul class="divide-y divide-dark-600">
+          <li th:each="line : ${order.orderLines}" class="p-4 flex justify-between text-slate-100">
             <span th:text="${line.product != null ? line.product.name : 'Produit'}">Produit</span>
-            <span th:text="${line.quantity} + ' × ' + ${#numbers.formatDecimal(line.unitPrice, 1, 'COMMA', 2, 'POINT')} + ' € = ' + ${#numbers.formatDecimal(line.lineTotal, 1, 'COMMA', 2, 'POINT')} + ' €'">0,00 €</span>
+            <span class="text-slate-400" th:text="${line.quantity} + ' × ' + ${#numbers.formatDecimal(line.unitPrice, 1, 'COMMA', 2, 'POINT')} + ' € = ' + ${#numbers.formatDecimal(line.lineTotal, 1, 'COMMA', 2, 'POINT')} + ' €'">0,00 €</span>
           </li>
         </ul>
-        <div class="p-4 border-t border-neutral-200 flex justify-between font-semibold text-lg">
+        <div class="p-4 border-t border-dark-600 flex justify-between font-semibold text-lg text-slate-100">
           <span>Total</span>
-          <span class="text-brand-600" th:text="${#numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
+          <span class="text-accent-400" th:text="${#numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
         </div>
       </div>
-      <div class="bg-white border border-neutral-200 rounded-lg p-4">
-        <h2 class="text-sm font-semibold text-neutral-900 mb-2">Mettre à jour le statut</h2>
+      <div class="bg-dark-800/60 border border-dark-600/40 rounded-xl p-4">
+        <h2 class="text-sm font-semibold text-slate-200 mb-2">Mettre à jour le statut</h2>
         <form th:action="@{/app/admin/orders/{id}/status(id=${order.id})}" method="post" class="flex flex-wrap items-center gap-2">
-          <select name="status" class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
+          <select name="status" class="px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
             <option th:each="s : ${orderStatuses}" th:value="${s}" th:text="${s}" th:selected="${order.status == s}">PENDING</option>
           </select>
-          <button type="submit" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Mettre à jour</button>
+          <button type="submit" class="px-4 py-2 bg-accent-600 text-white font-medium rounded-lg hover:bg-accent-500 transition-colors">Mettre à jour</button>
         </form>
       </div>
     </div>

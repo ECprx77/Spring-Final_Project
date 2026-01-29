@@ -3,67 +3,67 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-2xl mx-auto">
-      <h1 class="text-2xl font-bold text-neutral-900 mb-6" th:text="${pageTitle}">Produit</h1>
-      <p th:if="${message}" class="mb-4 p-3 bg-red-50 text-red-800 rounded-lg text-sm" th:text="${message}"></p>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-6" th:text="${pageTitle}">Produit</h1>
+      <p th:if="${message}" class="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-300 rounded-lg text-sm" th:text="${message}"></p>
       <form th:action="${product.id == null} ? @{/app/admin/products} : @{/app/admin/products/{id}(id=${product.id})}" th:object="${product}" method="post" enctype="multipart/form-data" class="space-y-4">
         <th:block th:if="${product.id != null}">
           <input type="hidden" th:field="*{id}"/>
         </th:block>
         <div>
-          <label for="name" class="block text-sm font-medium text-neutral-700 mb-1">Nom</label>
-          <input type="text" id="name" th:field="*{name}" required class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"/>
-          <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-red-600 text-sm mt-1"></p>
+          <label for="name" class="block text-sm font-medium text-slate-300 mb-1">Nom</label>
+          <input type="text" id="name" th:field="*{name}" required class="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-accent-500 focus:border-accent-500"/>
+          <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-red-400 text-sm mt-1"></p>
         </div>
         <div>
-          <label for="description" class="block text-sm font-medium text-neutral-700 mb-1">Description</label>
-          <textarea id="description" th:field="*{description}" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"></textarea>
+          <label for="description" class="block text-sm font-medium text-slate-300 mb-1">Description</label>
+          <textarea id="description" th:field="*{description}" rows="3" class="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-accent-500 focus:border-accent-500"></textarea>
         </div>
         <div>
-          <label for="price" class="block text-sm font-medium text-neutral-700 mb-1">Prix (€)</label>
-          <input type="number" id="price" th:field="*{price}" step="0.01" min="0.01" required class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"/>
-          <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-red-600 text-sm mt-1"></p>
+          <label for="price" class="block text-sm font-medium text-slate-300 mb-1">Prix (€)</label>
+          <input type="number" id="price" th:field="*{price}" step="0.01" min="0.01" required class="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-accent-500 focus:border-accent-500"/>
+          <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-red-400 text-sm mt-1"></p>
         </div>
         <div>
-          <label for="categoryId" class="block text-sm font-medium text-neutral-700 mb-1">Catégorie</label>
-          <select id="categoryId" th:field="*{categoryId}" required class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
+          <label for="categoryId" class="block text-sm font-medium text-slate-300 mb-1">Catégorie</label>
+          <select id="categoryId" th:field="*{categoryId}" required class="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
             <option value="">-- Choisir --</option>
             <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Catégorie</option>
           </select>
-          <p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" class="text-red-600 text-sm mt-1"></p>
+          <p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" class="text-red-400 text-sm mt-1"></p>
         </div>
         <div>
-          <label for="status" class="block text-sm font-medium text-neutral-700 mb-1">Statut stock</label>
-          <select id="status" th:field="*{status}" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
+          <label for="status" class="block text-sm font-medium text-slate-300 mb-1">Statut stock</label>
+          <select id="status" th:field="*{status}" class="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
             <option value="en_stock">En stock</option>
             <option value="en_rupture">Rupture</option>
           </select>
         </div>
         <div class="flex items-center gap-2">
-          <input type="checkbox" id="isPromo" th:field="*{isPromo}" class="rounded border-neutral-300 text-brand-600 focus:ring-brand-500"/>
-          <label for="isPromo" class="text-sm font-medium text-neutral-700">En promotion</label>
+          <input type="checkbox" id="isPromo" th:field="*{isPromo}" class="rounded border-dark-600 bg-dark-700 text-accent-500 focus:ring-accent-500"/>
+          <label for="isPromo" class="text-sm font-medium text-slate-300">En promotion</label>
         </div>
         <div>
-          <label for="image" class="block text-sm font-medium text-neutral-700 mb-1">Image du produit</label>
+          <label for="image" class="block text-sm font-medium text-slate-300 mb-1">Image du produit</label>
           <div th:if="${product.id != null}" class="mb-3" id="product-image-container">
-            <p class="text-sm text-neutral-600 mb-1">Image actuelle :</p>
+            <p class="text-sm text-slate-400 mb-1">Image actuelle :</p>
             <div id="product-image-with-file" class="flex items-center gap-3" th:style="${product.images != null and !product.images.isEmpty()} ? 'display:flex' : 'display:none'">
-              <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="${product.images[0].imageUrl}" alt="Image du produit" class="max-h-32 rounded-lg border border-neutral-200 object-cover shrink-0"/>
-              <button type="button" class="px-3 py-1.5 text-sm text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition shrink-0" th:attr="data-remove-url=@{/app/admin/products/{id}/image/remove(id=${product.id})}" onclick="removeProductImage(this)">Supprimer</button>
+              <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="${product.images[0].imageUrl}" alt="Image du produit" class="max-h-32 rounded-lg border border-dark-600 object-cover shrink-0"/>
+              <button type="button" class="px-3 py-1.5 text-sm text-red-400 border border-red-500/40 rounded-lg hover:bg-red-500/10 transition-colors shrink-0" th:attr="data-remove-url=@{/app/admin/products/{id}/image/remove(id=${product.id})}" onclick="removeProductImage(this)">Supprimer</button>
             </div>
             <div id="product-image-placeholder" th:style="${product.images == null or product.images.isEmpty()} ? '' : 'display:none'">
-              <div class="max-h-32 flex items-center justify-center rounded-lg border border-neutral-200 bg-neutral-100 text-neutral-400 text-6xl">
+              <div class="max-h-32 flex items-center justify-center rounded-lg border border-dark-600 bg-dark-700 text-slate-500 text-6xl">
                 📦
               </div>
-              <p class="text-sm text-neutral-500 mt-1">Aucune image</p>
+              <p class="text-sm text-slate-500 mt-1">Aucune image</p>
             </div>
           </div>
-          <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp" class="w-full text-sm text-neutral-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"/>
-          <p class="text-neutral-500 text-xs mt-1">Formats acceptés : JPG, PNG, GIF, WebP. Max 5 Mo. <span th:if="${product.id != null}">Choisir un fichier remplace l'image actuelle.</span></p>
+          <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp" class="w-full text-sm text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-accent-600 file:text-white hover:file:bg-accent-500 file:cursor-pointer"/>
+          <p class="text-slate-500 text-xs mt-1">Formats acceptés : JPG, PNG, GIF, WebP. Max 5 Mo. <span th:if="${product.id != null}">Choisir un fichier remplace l'image actuelle.</span></p>
         </div>
         <div class="flex gap-2">
-          <button type="submit" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Enregistrer</button>
-          <a th:href="@{/app/admin/products}" class="px-4 py-2 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition">Annuler</a>
+          <button type="submit" class="px-4 py-2 bg-accent-600 text-white font-medium rounded-lg hover:bg-accent-500 transition-colors">Enregistrer</button>
+          <a th:href="@{/app/admin/products}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Annuler</a>
         </div>
       </form>
     </div>

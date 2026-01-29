@@ -3,36 +3,36 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-4xl mx-auto">
-      <a th:href="@{/app/shop}" class="text-sm text-brand-600 hover:text-brand-700 mb-4 inline-block">← Retour au catalogue</a>
-      <article class="bg-white rounded-lg border border-neutral-200 overflow-hidden flex flex-col md:flex-row">
-        <div class="md:w-1/2 aspect-square bg-neutral-100 flex items-center justify-center overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <a th:href="@{/app/shop}" class="text-sm text-accent-400 hover:text-accent-300 mb-6 inline-block transition-colors">← Retour au catalogue</a>
+      <article class="bg-dark-800/60 rounded-xl border border-dark-600/40 overflow-hidden flex flex-col md:flex-row">
+        <div class="md:w-1/2 aspect-square bg-dark-700 flex items-center justify-center overflow-hidden">
           <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="${product.images[0].imageUrl}" th:alt="${product.name}" class="w-full h-full object-cover"/>
-          <span th:if="${product.images == null or product.images.isEmpty()}" class="text-6xl text-neutral-400">📦</span>
+          <span th:if="${product.images == null or product.images.isEmpty()}" class="text-6xl text-slate-600">📦</span>
         </div>
-        <div class="md:w-1/2 p-6 flex flex-col">
-          <h1 class="text-2xl font-bold text-neutral-900" th:text="${product.name}">Nom</h1>
+        <div class="md:w-1/2 p-6 sm:p-8 flex flex-col">
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-100" th:text="${product.name}">Nom</h1>
           <div class="flex items-center gap-2 mt-2">
-            <span th:if="${product.status == 'en_stock'}" class="inline-flex items-center gap-1 text-sm text-green-700">
-              <span class="w-2 h-2 rounded-full bg-green-500"></span> En stock
+            <span th:if="${product.status == 'en_stock'}" class="inline-flex items-center gap-1 text-sm text-emerald-400">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> En stock
             </span>
-            <span th:if="${product.status == 'en_rupture'}" class="inline-flex items-center gap-1 text-sm text-red-700">
+            <span th:if="${product.status == 'en_rupture'}" class="inline-flex items-center gap-1 text-sm text-red-400">
               <span class="w-2 h-2 rounded-full bg-red-500"></span> Rupture de stock
             </span>
-            <span th:if="${product.isPromo}" class="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">Promo</span>
+            <span th:if="${product.isPromo}" class="text-xs font-medium text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded">Promo</span>
           </div>
-          <p class="text-2xl font-semibold text-brand-600 mt-2" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</p>
-          <p class="text-neutral-600 mt-4 flex-1" th:text="${product.description}">Description</p>
+          <p class="text-2xl font-semibold text-accent-400 mt-3" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</p>
+          <p class="text-slate-400 mt-4 flex-1" th:text="${product.description}">Description</p>
           <div th:if="${user != null}" class="mt-6">
             <form th:if="${product.status == 'en_stock'}" th:action="@{/cart/add}" method="post" class="flex items-center gap-2" id="addToCartForm">
               <input type="hidden" name="productId" th:value="${product.id}"/>
               <input type="hidden" name="quantity" value="1"/>
-              <button type="submit" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Ajouter au panier</button>
+              <button type="submit" class="px-6 py-3 bg-accent-600 text-white font-medium rounded-lg hover:bg-accent-500 transition-colors duration-200">Ajouter au panier</button>
             </form>
-            <p th:if="${product.status == 'en_rupture'}" class="text-red-600 text-sm">Ce produit n'est pas disponible à la commande.</p>
+            <p th:if="${product.status == 'en_rupture'}" class="text-red-400 text-sm">Ce produit n'est pas disponible à la commande.</p>
           </div>
-          <p th:if="${user == null}" class="mt-6 text-sm text-neutral-600">
-            <a th:href="@{/app/login}" class="text-brand-600 hover:text-brand-700">Connectez-vous</a> pour ajouter au panier.
+          <p th:if="${user == null}" class="mt-6 text-sm text-slate-400">
+            <a th:href="@{/app/login}" class="text-accent-400 hover:text-accent-300">Connectez-vous</a> pour ajouter au panier.
           </p>
         </div>
       </article>

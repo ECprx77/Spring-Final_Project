@@ -3,15 +3,57 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="text-center py-12">
-      <h1 class="text-3xl font-bold text-neutral-900 mb-4">Bienvenue sur TechZone</h1>
-      <p class="text-neutral-600 mb-8 max-w-xl mx-auto">
-        Découvrez notre catalogue de produits high-tech : PC, smartphones, accessoires.
-      </p>
-      <a th:href="@{/app/shop}" class="inline-flex items-center px-6 py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">
-        Voir le catalogue
-      </a>
-    </div>
+    <!-- Hero -->
+    <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-dark-800/80 to-dark-900"></div>
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-100 mb-6 animate-fade-in-up leading-tight tracking-tight">
+          Bienvenue sur TechZone
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-400 mb-10 max-w-2xl mx-auto animate-fade-in-up animate-delay-100">
+          Découvrez notre catalogue de produits high-tech : PC, smartphones, accessoires. La tech, réinventée.
+        </p>
+        <a th:href="@{/app/shop}" class="inline-flex items-center px-8 py-4 bg-accent-500 text-white font-semibold rounded-lg hover:bg-accent-600 transition-all duration-300 hover:scale-[1.02] animate-fade-in-up animate-delay-200">
+          Voir le catalogue
+        </a>
+      </div>
+    </section>
+
+    <!-- Stats / Highlights -->
+    <section class="py-16 sm:py-24 border-t border-dark-600/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 text-center mb-12">Pourquoi TechZone ?</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="text-center p-6 rounded-xl bg-dark-800/60 border border-dark-600/40 hover:border-accent-500/30 transition-all duration-300">
+            <span class="text-3xl font-bold text-accent-400 block mb-2">100%</span>
+            <span class="text-slate-400 text-sm">Produits vérifiés</span>
+          </div>
+          <div class="text-center p-6 rounded-xl bg-dark-800/60 border border-dark-600/40 hover:border-accent-500/30 transition-all duration-300">
+            <span class="text-3xl font-bold text-accent-400 block mb-2">Livraison</span>
+            <span class="text-slate-400 text-sm">Rapide et sécurisée</span>
+          </div>
+          <div class="text-center p-6 rounded-xl bg-dark-800/60 border border-dark-600/40 hover:border-accent-500/30 transition-all duration-300">
+            <span class="text-3xl font-bold text-accent-400 block mb-2">Support</span>
+            <span class="text-slate-400 text-sm">À votre écoute</span>
+          </div>
+          <div class="text-center p-6 rounded-xl bg-dark-800/60 border border-dark-600/40 hover:border-accent-500/30 transition-all duration-300">
+            <span class="text-3xl font-bold text-accent-400 block mb-2">Paiement</span>
+            <span class="text-slate-400 text-sm">Sécurisé</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-16 sm:py-24 border-t border-dark-600/50">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-4">Prêt à découvrir ?</h2>
+        <p class="text-slate-400 mb-8">Parcourez notre catalogue et trouvez l’équipement qu’il vous faut.</p>
+        <a th:href="@{/app/shop}" class="inline-flex items-center px-6 py-3 border border-accent-500/60 text-accent-400 font-medium rounded-lg hover:bg-accent-500/10 transition-all duration-300">
+          Accéder au catalogue
+        </a>
+      </div>
+    </section>
   </th:block>
 </body>
 </html>

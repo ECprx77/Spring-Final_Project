@@ -3,38 +3,38 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-neutral-900">Produits</h1>
-        <a th:href="@{/app/admin/products/new}" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Nouveau produit</a>
+        <h1 class="text-2xl sm:text-3xl font-bold text-slate-100">Produits</h1>
+        <a th:href="@{/app/admin/products/new}" class="px-4 py-2 bg-accent-600 text-white font-medium rounded-lg hover:bg-accent-500 transition-colors">Nouveau produit</a>
       </div>
-      <p th:if="${message}" class="mb-4 p-3 bg-green-50 text-green-800 rounded-lg text-sm" th:text="${message}"></p>
-      <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
-        <table class="min-w-full divide-y divide-neutral-200">
-          <thead class="bg-neutral-50">
+      <p th:if="${message}" class="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-sm" th:text="${message}"></p>
+      <div class="bg-dark-800/60 border border-dark-600/40 rounded-xl overflow-hidden">
+        <table class="min-w-full divide-y divide-dark-600">
+          <thead class="bg-dark-700/60">
             <tr>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Nom</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Prix</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Stock</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Promo</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Catégorie</th>
-              <th class="px-4 py-2 text-right text-sm font-semibold text-neutral-900">Actions</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Nom</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Prix</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Stock</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Promo</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-slate-200">Catégorie</th>
+              <th class="px-4 py-3 text-right text-sm font-semibold text-slate-200">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-neutral-200">
-            <tr th:each="p : ${productPage.content}" class="bg-white">
-              <td class="px-4 py-2 text-sm text-neutral-900" th:text="${p.name}">Nom</td>
-              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</td>
-              <td class="px-4 py-2 text-sm">
-                <span th:if="${p.status == 'en_stock'}" class="text-green-600">En stock</span>
-                <span th:if="${p.status == 'en_rupture'}" class="text-red-600">Rupture</span>
+          <tbody class="divide-y divide-dark-600">
+            <tr th:each="p : ${productPage.content}" class="hover:bg-dark-700/40 transition-colors">
+              <td class="px-4 py-3 text-sm text-slate-100" th:text="${p.name}">Nom</td>
+              <td class="px-4 py-3 text-sm text-slate-400" th:text="${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</td>
+              <td class="px-4 py-3 text-sm">
+                <span th:if="${p.status == 'en_stock'}" class="text-emerald-400">En stock</span>
+                <span th:if="${p.status == 'en_rupture'}" class="text-red-400">Rupture</span>
               </td>
-              <td class="px-4 py-2 text-sm" th:text="${p.isPromo} ? 'Oui' : 'Non'">Non</td>
-              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${p.category != null ? p.category.name : '-'}">-</td>
-              <td class="px-4 py-2 text-right text-sm space-x-2">
-                <a th:href="@{/app/admin/products/{id}/edit(id=${p.id})}" class="text-brand-600 hover:text-brand-700">Modifier</a>
+              <td class="px-4 py-3 text-sm text-slate-400" th:text="${p.isPromo} ? 'Oui' : 'Non'">Non</td>
+              <td class="px-4 py-3 text-sm text-slate-400" th:text="${p.category != null ? p.category.name : '-'}">-</td>
+              <td class="px-4 py-3 text-right text-sm space-x-2">
+                <a th:href="@{/app/admin/products/{id}/edit(id=${p.id})}" class="text-accent-400 hover:text-accent-300 transition-colors">Modifier</a>
                 <form th:action="@{/app/admin/products/{id}/delete(id=${p.id})}" method="post" class="inline" th:onclick="return confirm('Supprimer ce produit ?');">
-                  <button type="submit" class="text-red-600 hover:text-red-700 cursor-pointer">Supprimer</button>
+                  <button type="submit" class="text-red-400 hover:text-red-300 cursor-pointer transition-colors">Supprimer</button>
                 </form>
               </td>
             </tr>
@@ -42,9 +42,9 @@
         </table>
       </div>
       <nav th:if="${productPage.totalPages > 1}" class="mt-4 flex justify-center gap-2">
-        <a th:if="${productPage.hasPrevious()}" th:href="@{/app/admin/products(page=${productPage.number - 1}, size=${productPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
-        <span class="px-3 py-1 text-neutral-600" th:text="'Page ' + (productPage.number + 1) + ' / ' + productPage.totalPages">Page 1 / 1</span>
-        <a th:if="${productPage.hasNext()}" th:href="@{/app/admin/products(page=${productPage.number + 1}, size=${productPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
+        <a th:if="${productPage.hasPrevious()}" th:href="@{/app/admin/products(page=${productPage.number - 1}, size=${productPage.size})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Préc.</a>
+        <span class="px-4 py-2 text-slate-500" th:text="'Page ' + (productPage.number + 1) + ' / ' + productPage.totalPages">Page 1 / 1</span>
+        <a th:if="${productPage.hasNext()}" th:href="@{/app/admin/products(page=${productPage.number + 1}, size=${productPage.size})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Suiv.</a>
       </nav>
     </div>
   </th:block>

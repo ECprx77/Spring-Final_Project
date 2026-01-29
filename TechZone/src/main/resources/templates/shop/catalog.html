@@ -3,72 +3,74 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="flex flex-col md:flex-row gap-8">
-      <aside class="w-full md:w-56 shrink-0">
-        <h2 class="text-sm font-semibold text-neutral-700 mb-2">Catégories</h2>
-        <form th:action="@{/app/shop}" method="get" class="mb-4">
-          <input type="hidden" name="page" value="0"/>
-          <div class="flex gap-1">
-            <input type="search" name="q" th:value="${searchQuery}" placeholder="Rechercher…" aria-label="Rechercher dans le catalogue"
-                   class="flex-1 px-2 py-1.5 text-sm border border-neutral-300 rounded focus:ring-2 focus:ring-brand-500 focus:border-brand-500"/>
-            <button type="submit" class="px-3 py-1.5 text-sm bg-brand-600 text-white rounded hover:bg-brand-700">OK</button>
-          </div>
-        </form>
-        <ul class="space-y-1">
-          <li>
-            <a th:href="@{/app/shop}" class="block py-1 text-sm"
-               th:classappend="${selectedCategoryId == null and filterPromo == null and filterInStock == null and searchQuery == null} ? 'text-brand-600 font-medium' : 'text-neutral-600 hover:text-neutral-900'">
-              Toutes
-            </a>
-          </li>
-          <li>
-            <a th:href="@{/app/shop(promo=true)}" class="block py-1 text-sm"
-               th:classappend="${filterPromo == true} ? 'text-brand-600 font-medium' : 'text-neutral-600 hover:text-neutral-900'">
-              En promotion
-            </a>
-          </li>
-          <li>
-            <a th:href="@{/app/shop(inStock=true)}" class="block py-1 text-sm"
-               th:classappend="${filterInStock == true} ? 'text-brand-600 font-medium' : 'text-neutral-600 hover:text-neutral-900'">
-              En stock uniquement
-            </a>
-          </li>
-          <li th:each="cat : ${categories}">
-            <a th:href="@{/app/shop(categoryId=${cat.id})}" class="block py-1 text-sm"
-               th:classappend="${selectedCategoryId != null and selectedCategoryId == cat.id} ? 'text-brand-600 font-medium' : 'text-neutral-600 hover:text-neutral-900'"
-               th:text="${cat.name}">Catégorie</a>
-          </li>
-        </ul>
-      </aside>
-      <div class="flex-1">
-        <h1 class="text-2xl font-bold text-neutral-900 mb-4">Catalogue</h1>
-        <p th:if="${searchQuery != null}" class="text-neutral-600 mb-4">Résultats pour « <strong th:text="${searchQuery}">q</strong> »</p>
-        <div th:if="${productPage.empty}" class="text-neutral-600 py-8">Aucun produit.</div>
-        <div th:if="${!productPage.empty}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <article th:each="product : ${productPage.content}" class="bg-white rounded-lg border border-neutral-200 overflow-hidden hover:shadow-md transition">
-            <a th:href="@{/app/shop/products/{id}(id=${product.id})}" class="block">
-              <div class="aspect-square bg-neutral-100 flex items-center justify-center overflow-hidden">
-                <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="${product.images[0].imageUrl}" th:alt="${product.name}" class="w-full h-full object-cover"/>
-                <span th:if="${product.images == null or product.images.isEmpty()}" class="text-4xl text-neutral-400">📦</span>
-              </div>
-              <div class="p-4">
-                <h3 class="font-semibold text-neutral-900" th:text="${product.name}">Nom</h3>
-                <p class="text-sm text-neutral-600 line-clamp-2" th:text="${product.description}">Description</p>
-                <div class="mt-2 flex items-center justify-between">
-                  <span class="text-lg font-semibold text-brand-600" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
-                  <span th:if="${product.status == 'en_stock'}" class="inline-block w-2 h-2 rounded-full bg-green-500" title="En stock"></span>
-                  <span th:if="${product.status == 'en_rupture'}" class="inline-block w-2 h-2 rounded-full bg-red-500" title="Rupture"></span>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div class="flex flex-col md:flex-row gap-8">
+        <aside class="w-full md:w-56 shrink-0">
+          <h2 class="text-sm font-semibold text-slate-300 mb-2">Catégories</h2>
+          <form th:action="@{/app/shop}" method="get" class="mb-4">
+            <input type="hidden" name="page" value="0"/>
+            <div class="flex gap-2">
+              <input type="search" name="q" th:value="${searchQuery}" placeholder="Rechercher…" aria-label="Rechercher dans le catalogue"
+                     class="flex-1 px-3 py-2 text-sm bg-dark-700 border border-dark-600 rounded-lg text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-accent-500 focus:border-accent-500"/>
+              <button type="submit" class="px-3 py-2 text-sm bg-accent-600 text-white rounded-lg hover:bg-accent-500 transition-colors">OK</button>
+            </div>
+          </form>
+          <ul class="space-y-1">
+            <li>
+              <a th:href="@{/app/shop}" class="block py-2 text-sm transition-colors"
+                 th:classappend="${selectedCategoryId == null and filterPromo == null and filterInStock == null and searchQuery == null} ? 'text-accent-400 font-medium' : 'text-slate-400 hover:text-accent-400'">
+                Toutes
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/app/shop(promo=true)}" class="block py-2 text-sm transition-colors"
+                 th:classappend="${filterPromo == true} ? 'text-accent-400 font-medium' : 'text-slate-400 hover:text-accent-400'">
+                En promotion
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/app/shop(inStock=true)}" class="block py-2 text-sm transition-colors"
+                 th:classappend="${filterInStock == true} ? 'text-accent-400 font-medium' : 'text-slate-400 hover:text-accent-400'">
+                En stock uniquement
+              </a>
+            </li>
+            <li th:each="cat : ${categories}">
+              <a th:href="@{/app/shop(categoryId=${cat.id})}" class="block py-2 text-sm transition-colors"
+                 th:classappend="${selectedCategoryId != null and selectedCategoryId == cat.id} ? 'text-accent-400 font-medium' : 'text-slate-400 hover:text-accent-400'"
+                 th:text="${cat.name}">Catégorie</a>
+            </li>
+          </ul>
+        </aside>
+        <div class="flex-1">
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-4">Catalogue</h1>
+          <p th:if="${searchQuery != null}" class="text-slate-400 mb-4">Résultats pour « <strong class="text-slate-200" th:text="${searchQuery}">q</strong> »</p>
+          <div th:if="${productPage.empty}" class="text-slate-400 py-12">Aucun produit.</div>
+          <div th:if="${!productPage.empty}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <article th:each="product : ${productPage.content}" class="bg-dark-800/60 rounded-xl border border-dark-600/40 overflow-hidden hover:border-accent-500/30 hover:shadow-lg hover:shadow-accent-500/5 transition-all duration-300">
+              <a th:href="@{/app/shop/products/{id}(id=${product.id})}" class="block">
+                <div class="aspect-square bg-dark-700 flex items-center justify-center overflow-hidden">
+                  <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="${product.images[0].imageUrl}" th:alt="${product.name}" class="w-full h-full object-cover"/>
+                  <span th:if="${product.images == null or product.images.isEmpty()}" class="text-4xl text-slate-600">📦</span>
                 </div>
-                <div th:if="${product.isPromo}" class="mt-1 text-xs text-red-600 font-medium">Promo</div>
-              </div>
-            </a>
-          </article>
+                <div class="p-4">
+                  <h3 class="font-semibold text-slate-100" th:text="${product.name}">Nom</h3>
+                  <p class="text-sm text-slate-400 line-clamp-2 mt-1" th:text="${product.description}">Description</p>
+                  <div class="mt-3 flex items-center justify-between">
+                    <span class="text-lg font-semibold text-accent-400" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
+                    <span th:if="${product.status == 'en_stock'}" class="inline-block w-2 h-2 rounded-full bg-emerald-500" title="En stock"></span>
+                    <span th:if="${product.status == 'en_rupture'}" class="inline-block w-2 h-2 rounded-full bg-red-500" title="Rupture"></span>
+                  </div>
+                  <div th:if="${product.isPromo}" class="mt-1 text-xs text-amber-400 font-medium">Promo</div>
+                </div>
+              </a>
+            </article>
+          </div>
+          <nav th:if="${productPage.totalPages > 1}" class="mt-8 flex justify-center gap-2">
+            <a th:if="${productPage.hasPrevious()}" th:href="@{/app/shop(page=${productPage.number - 1}, size=${productPage.size}, categoryId=${selectedCategoryId}, promo=${filterPromo}, inStock=${filterInStock}, q=${searchQuery}, sortBy=${sortBy}, sortDirection=${sortDirection})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Préc.</a>
+            <span class="px-4 py-2 text-slate-500" th:text="${'Page ' + (productPage.number + 1) + ' / ' + productPage.totalPages}">Page 1 / 1</span>
+            <a th:if="${productPage.hasNext()}" th:href="@{/app/shop(page=${productPage.number + 1}, size=${productPage.size}, categoryId=${selectedCategoryId}, promo=${filterPromo}, inStock=${filterInStock}, q=${searchQuery}, sortBy=${sortBy}, sortDirection=${sortDirection})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Suiv.</a>
+          </nav>
         </div>
-        <nav th:if="${productPage.totalPages > 1}" class="mt-8 flex justify-center gap-2">
-          <a th:if="${productPage.hasPrevious()}" th:href="@{/app/shop(page=${productPage.number - 1}, size=${productPage.size}, categoryId=${selectedCategoryId}, promo=${filterPromo}, inStock=${filterInStock}, q=${searchQuery}, sortBy=${sortBy}, sortDirection=${sortDirection})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
-          <span class="px-3 py-1 text-neutral-600" th:text="${'Page ' + (productPage.number + 1) + ' / ' + productPage.totalPages}">Page 1 / 1</span>
-          <a th:if="${productPage.hasNext()}" th:href="@{/app/shop(page=${productPage.number + 1}, size=${productPage.size}, categoryId=${selectedCategoryId}, promo=${filterPromo}, inStock=${filterInStock}, q=${searchQuery}, sortBy=${sortBy}, sortDirection=${sortDirection})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
-        </nav>
       </div>
     </div>
   </th:block>

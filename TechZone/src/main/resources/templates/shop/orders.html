@@ -3,26 +3,26 @@
       th:replace="~{layout :: layout(~{::main})}">
 <body>
   <th:block th:fragment="main">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-2xl font-bold text-neutral-900 mb-6">Mes commandes</h1>
-      <div th:if="${orderPage.empty}" class="text-neutral-600 py-8">Aucune commande.</div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">Mes commandes</h1>
+      <div th:if="${orderPage.empty}" class="text-slate-400 py-12 rounded-xl bg-dark-800/60 border border-dark-600/40 p-8 text-center">Aucune commande.</div>
       <div th:if="${!orderPage.empty}">
-        <ul class="divide-y divide-neutral-200 border border-neutral-200 rounded-lg overflow-hidden">
-          <li th:each="order : ${orderPage.content}" class="p-4 bg-white flex flex-wrap items-center justify-between gap-2">
+        <ul class="divide-y divide-dark-600 border border-dark-600/40 rounded-xl overflow-hidden bg-dark-800/60">
+          <li th:each="order : ${orderPage.content}" class="p-4 sm:p-5 flex flex-wrap items-center justify-between gap-2 hover:bg-dark-700/40 transition-colors">
             <div>
-              <a th:href="@{/app/shop/orders/{id}(id=${order.id})}" class="font-medium text-brand-600 hover:text-brand-700" th:text="'Commande #' + ${order.id}">Commande #1</a>
-              <span class="text-neutral-500 text-sm ml-2" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">Date</span>
+              <a th:href="@{/app/shop/orders/{id}(id=${order.id})}" class="font-medium text-accent-400 hover:text-accent-300 transition-colors" th:text="'Commande #' + ${order.id}">Commande #1</a>
+              <span class="text-slate-500 text-sm ml-2" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">Date</span>
             </div>
             <div class="flex items-center gap-4">
-              <span class="text-sm font-medium" th:classappend="${order.status == 'CANCELLED'} ? 'text-red-600' : 'text-neutral-700'" th:text="${order.status}">PENDING</span>
-              <span class="font-semibold text-neutral-900" th:text="${#numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
+              <span class="text-sm font-medium" th:classappend="${order.status == 'CANCELLED'} ? 'text-red-400' : 'text-slate-300'" th:text="${order.status}">PENDING</span>
+              <span class="font-semibold text-accent-400" th:text="${#numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
             </div>
           </li>
         </ul>
         <nav th:if="${orderPage.totalPages > 1}" class="mt-6 flex justify-center gap-2">
-          <a th:if="${orderPage.hasPrevious()}" th:href="@{/app/shop/orders(page=${orderPage.number - 1}, size=${orderPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
-          <span class="px-3 py-1 text-neutral-600" th:text="'Page ' + (orderPage.number + 1) + ' / ' + orderPage.totalPages">Page 1 / 1</span>
-          <a th:if="${orderPage.hasNext()}" th:href="@{/app/shop/orders(page=${orderPage.number + 1}, size=${orderPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
+          <a th:if="${orderPage.hasPrevious()}" th:href="@{/app/shop/orders(page=${orderPage.number - 1}, size=${orderPage.size})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Préc.</a>
+          <span class="px-4 py-2 text-slate-500" th:text="'Page ' + (orderPage.number + 1) + ' / ' + orderPage.totalPages">Page 1 / 1</span>
+          <a th:if="${orderPage.hasNext()}" th:href="@{/app/shop/orders(page=${orderPage.number + 1}, size=${orderPage.size})}" class="px-4 py-2 border border-dark-600 rounded-lg text-slate-400 hover:bg-dark-600 hover:text-slate-100 transition-colors">Suiv.</a>
         </nav>
       </div>
     </div>
