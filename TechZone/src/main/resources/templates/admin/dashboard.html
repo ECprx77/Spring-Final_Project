@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{layout :: layout(~{::main})}">
+<body>
+  <th:block th:fragment="main">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-2xl font-bold text-neutral-900 mb-6">Administration TechZone</h1>
+      <nav class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a th:href="@{/app/admin/products}" class="block p-6 bg-white border border-neutral-200 rounded-lg hover:shadow-md transition text-center">
+          <span class="text-3xl block mb-2">📦</span>
+          <span class="font-semibold text-neutral-900">Produits</span>
+          <p class="text-sm text-neutral-600 mt-1">Gérer le catalogue</p>
+        </a>
+        <a th:href="@{/app/admin/categories}" class="block p-6 bg-white border border-neutral-200 rounded-lg hover:shadow-md transition text-center">
+          <span class="text-3xl block mb-2">📁</span>
+          <span class="font-semibold text-neutral-900">Catégories</span>
+          <p class="text-sm text-neutral-600 mt-1">Gérer les catégories</p>
+        </a>
+        <a th:href="@{/app/admin/orders}" class="block p-6 bg-white border border-neutral-200 rounded-lg hover:shadow-md transition text-center">
+          <span class="text-3xl block mb-2">📋</span>
+          <span class="font-semibold text-neutral-900">Commandes</span>
+          <p class="text-sm text-neutral-600 mt-1">Voir et mettre à jour les commandes</p>
+        </a>
+      </nav>
+    </div>
+  </th:block>
+</body>
+</html>

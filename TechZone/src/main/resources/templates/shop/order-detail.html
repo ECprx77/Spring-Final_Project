@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{layout :: layout(~{::main})}">
+<body>
+  <th:block th:fragment="main">
+    <div class="max-w-3xl mx-auto">
+      <a th:href="@{/app/shop/orders}" class="text-sm text-brand-600 hover:text-brand-700 mb-4 inline-block">← Retour aux commandes</a>
+      <h1 class="text-2xl font-bold text-neutral-900 mb-6" th:text="'Commande #' + ${order.id}">Commande #1</h1>
+      <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
+        <div class="p-4 border-b border-neutral-200 flex justify-between items-center">
+          <span class="text-neutral-600" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">Date</span>
+          <span class="font-medium" th:classappend="${order.status == 'CANCELLED'} ? 'text-red-600' : 'text-neutral-900'" th:text="${order.status}">PENDING</span>
+        </div>
+        <ul class="divide-y divide-neutral-200">
+          <li th:each="line : ${order.orderLines}" class="p-4 flex justify-between">
+            <span th:text="${line.product != null ? line.product.name : 'Produit'}">Produit</span>
+            <span th:text="${line.quantity} + ' × ' + ${#numbers.formatDecimal(line.unitPrice, 1, 'COMMA', 2, 'POINT')} + ' € = ' + ${#numbers.formatDecimal(line.lineTotal, 1, 'COMMA', 2, 'POINT')} + ' €'">0,00 €</span>
+          </li>
+        </ul>
+        <div class="p-4 border-t border-neutral-200 flex justify-between font-semibold text-lg">
+          <span>Total</span>
+          <span class="text-brand-600" th:text="${#numbers.formatDecimal(order.total, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</body>
+</html>

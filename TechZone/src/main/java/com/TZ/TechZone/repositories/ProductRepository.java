@@ -18,4 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> searchByNameOrDescription(@Param("query") String query, Pageable pageable);
     
     List<Product> findByIsPromoTrue();
+
+    Page<Product> findByIsPromoTrue(Pageable pageable);
+
+    Page<Product> findByStatus(Product.ProductStatus status, Pageable pageable);
 }

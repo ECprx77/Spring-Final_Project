@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{layout :: layout(~{::main})}">
+<body>
+  <th:block th:fragment="main">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-neutral-900">Catégories</h1>
+        <a th:href="@{/app/admin/categories/new}" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Nouvelle catégorie</a>
+      </div>
+      <p th:if="${message}" class="mb-4 p-3 bg-green-50 text-green-800 rounded-lg text-sm" th:text="${message}"></p>
+      <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
+        <table class="min-w-full divide-y divide-neutral-200">
+          <thead class="bg-neutral-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Nom</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-neutral-900">Description</th>
+              <th class="px-4 py-2 text-right text-sm font-semibold text-neutral-900">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-200">
+            <tr th:each="c : ${categoryPage.content}" class="bg-white">
+              <td class="px-4 py-2 text-sm font-medium text-neutral-900" th:text="${c.name}">Nom</td>
+              <td class="px-4 py-2 text-sm text-neutral-600" th:text="${c.description}">Description</td>
+              <td class="px-4 py-2 text-right text-sm space-x-2">
+                <a th:href="@{/app/admin/categories/{id}/edit(id=${c.id})}" class="text-brand-600 hover:text-brand-700">Modifier</a>
+                <form th:action="@{/app/admin/categories/{id}/delete(id=${c.id})}" method="post" class="inline" th:onclick="return confirm('Supprimer cette catégorie ?');">
+                  <button type="submit" class="text-red-600 hover:text-red-700 cursor-pointer">Supprimer</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <nav th:if="${categoryPage.totalPages > 1}" class="mt-4 flex justify-center gap-2">
+        <a th:if="${categoryPage.hasPrevious()}" th:href="@{/app/admin/categories(page=${categoryPage.number - 1}, size=${categoryPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Préc.</a>
+        <span class="px-3 py-1 text-neutral-600" th:text="'Page ' + (categoryPage.number + 1) + ' / ' + categoryPage.totalPages">Page 1 / 1</span>
+        <a th:if="${categoryPage.hasNext()}" th:href="@{/app/admin/categories(page=${categoryPage.number + 1}, size=${categoryPage.size})}" class="px-3 py-1 border border-neutral-300 rounded hover:bg-neutral-100">Suiv.</a>
+      </nav>
+    </div>
+  </th:block>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{layout :: layout(~{::main})}">
+<body>
+  <th:block th:fragment="main">
+    <div class="max-w-4xl mx-auto">
+      <a th:href="@{/app/shop}" class="text-sm text-brand-600 hover:text-brand-700 mb-4 inline-block">← Retour au catalogue</a>
+      <article class="bg-white rounded-lg border border-neutral-200 overflow-hidden flex flex-col md:flex-row">
+        <div class="md:w-1/2 aspect-square bg-neutral-100 flex items-center justify-center">
+          <span class="text-6xl text-neutral-400">📦</span>
+        </div>
+        <div class="md:w-1/2 p-6 flex flex-col">
+          <h1 class="text-2xl font-bold text-neutral-900" th:text="${product.name}">Nom</h1>
+          <div class="flex items-center gap-2 mt-2">
+            <span th:if="${product.status == 'en_stock'}" class="inline-flex items-center gap-1 text-sm text-green-700">
+              <span class="w-2 h-2 rounded-full bg-green-500"></span> En stock
+            </span>
+            <span th:if="${product.status == 'en_rupture'}" class="inline-flex items-center gap-1 text-sm text-red-700">
+              <span class="w-2 h-2 rounded-full bg-red-500"></span> Rupture de stock
+            </span>
+            <span th:if="${product.isPromo}" class="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">Promo</span>
+          </div>
+          <p class="text-2xl font-semibold text-brand-600 mt-2" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</p>
+          <p class="text-neutral-600 mt-4 flex-1" th:text="${product.description}">Description</p>
+          <div th:if="${user != null}" class="mt-6">
+            <form th:if="${product.status == 'en_stock'}" th:action="@{/cart/add}" method="post" class="flex items-center gap-2" id="addToCartForm">
+              <input type="hidden" name="productId" th:value="${product.id}"/>
+              <input type="hidden" name="quantity" value="1"/>
+              <button type="submit" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Ajouter au panier</button>
+            </form>
+            <p th:if="${product.status == 'en_rupture'}" class="text-red-600 text-sm">Ce produit n'est pas disponible à la commande.</p>
+          </div>
+          <p th:if="${user == null}" class="mt-6 text-sm text-neutral-600">
+            <a th:href="@{/app/login}" class="text-brand-600 hover:text-brand-700">Connectez-vous</a> pour ajouter au panier.
+          </p>
+        </div>
+      </article>
+    </div>
+    <script th:inline="javascript">
+      document.getElementById('addToCartForm') && document.getElementById('addToCartForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = e.target;
+        var body = JSON.stringify({ productId: parseInt(form.productId.value), quantity: parseInt(form.quantity.value) || 1 });
+        fetch(/*[[@{/cart/add}]]*/ '', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: body,
+          credentials: 'same-origin'
+        }).then(function(r) {
+          if (r.ok) { alert('Ajouté au panier'); window.location.href = /*[[@{/app/shop/cart}]]*/ ''; }
+          else { alert('Erreur'); }
+        }).catch(function() { alert('Erreur'); });
+      });
+    </script>
+  </th:block>
+</body>
+</html>

@@ -90,12 +90,17 @@ public class SecurityConfig {
                     // H2 Console - Accès public (développement uniquement)
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
-                    // GET produits et catégories (public) - context-path /api déjà appliqué
+                    // GET produits et catégories (public)
                     .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                    // Endpoints admin - Nécessite ROLE_ADMIN
+                    // Pages Thymeleaf (préfixe /app)
+                    .requestMatchers("/app", "/app/").permitAll()
+                    .requestMatchers("/app/login", "/app/register", "/app/logout").permitAll()
+                    .requestMatchers("/app/shop", "/app/shop/", "/app/shop/products", "/app/shop/products/**").permitAll()
+                    .requestMatchers("/app/admin/**").hasRole("ADMIN")
+                    // API REST admin - Nécessite ROLE_ADMIN
                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                    // Autres requêtes nécessitent authentification
+                    // Panier, commandes, checkout nécessitent authentification
                     .anyRequest().authenticated()
             )
             // Permettre les frames pour H2 Console (header X-Frame-Options: SAMEORIGIN)
