@@ -80,26 +80,24 @@ public class SecurityConfig {
                                     "/**/*.woff", "/**/*.woff2", "/**/*.ttf", "/**/*.eot").permitAll()
                     // Uploaded files (public read)
                     .requestMatchers("/uploads/**").permitAll()
-                    // API d'authentification (context-path /api déjà appliqué)
-                    .requestMatchers("/auth/**").permitAll()
-                    // Swagger/OpenAPI - toutes les variantes
-                    .requestMatchers("/swagger-ui**", "/swagger-ui/**", "/swagger-resources/**",
-                                    "/v3/api-docs**", "/v3/api-docs/**",
-                                    "/api/swagger-ui**", "/api/swagger-ui/**", "/api/swagger-resources/**",
+                    // API d'authentification
+                    .requestMatchers("/api/auth/**").permitAll()
+                    // Swagger/OpenAPI
+                    .requestMatchers("/api/swagger-ui**", "/api/swagger-ui/**", "/api/swagger-resources/**",
                                     "/api/v3/api-docs**", "/api/v3/api-docs/**").permitAll()
                     // H2 Console - Accès public (développement uniquement)
-                    .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/api/h2-console/**").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/error").permitAll()
                     // GET produits et catégories (public)
-                    .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                    // Pages Thymeleaf (préfixe /app)
-                    .requestMatchers("/app", "/app/").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                    // Pages Thymeleaf (préfixe /app) - Frontend at root
+                    .requestMatchers("/", "/app", "/app/").permitAll()
                     .requestMatchers("/app/login", "/app/register", "/app/logout").permitAll()
                     .requestMatchers("/app/shop", "/app/shop/", "/app/shop/products", "/app/shop/products/**").permitAll()
                     .requestMatchers("/app/admin/**").hasRole("ADMIN")
                     // API REST admin - Nécessite ROLE_ADMIN
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     // Panier, commandes, checkout nécessitent authentification
                     .anyRequest().authenticated()
             )

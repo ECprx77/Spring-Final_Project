@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
  *  - PUT    /api/admin/users/{id}/role    (changer rôle)
  */
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired

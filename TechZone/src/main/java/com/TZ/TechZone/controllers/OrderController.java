@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
  *  - PUT  /api/admin/orders/{id}/status
  */
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 public class OrderController {
 
     @Autowired
