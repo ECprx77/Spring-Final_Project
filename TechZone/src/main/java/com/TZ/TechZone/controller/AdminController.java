@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -141,14 +142,24 @@ public class AdminController {
     }
 
     @PostMapping("/admin/products/{id}/image/remove")
-    public String productImageRemove(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public Object productImageRemove(
+            @PathVariable Integer id,
+            @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
+            RedirectAttributes redirectAttributes) {
         try {
             productImageService.deleteAllImagesForProduct(id);
+            if ("XMLHttpRequest".equals(requestedWith)) {
+                return ResponseEntity.noContent().build();
+            }
             redirectAttributes.addFlashAttribute("message", "Image supprimée.");
+            return "redirect:/app/admin/products/" + id + "/edit";
         } catch (Exception e) {
+            if ("XMLHttpRequest".equals(requestedWith)) {
+                return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("message", "Impossible de supprimer l'image : " + e.getMessage());
+            return "redirect:/app/admin/products/" + id + "/edit";
         }
-        return "redirect:/app/admin/products/" + id + "/edit";
     }
 
     @PostMapping("/admin/products/{id}/delete")
