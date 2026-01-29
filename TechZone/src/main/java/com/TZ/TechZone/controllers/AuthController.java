@@ -1,16 +1,19 @@
 package com.TZ.TechZone.controllers;
 
 import com.TZ.TechZone.dto.UserDTO;
+import com.TZ.TechZone.entities.AuditLog;
 import com.TZ.TechZone.entities.Role;
 import com.TZ.TechZone.entities.User;
 import com.TZ.TechZone.exceptions.ResourceNotFoundException;
 import com.TZ.TechZone.payload.JwtAuthenticationResponse;
 import com.TZ.TechZone.payload.LoginRequest;
 import com.TZ.TechZone.payload.SignUpRequest;
+import com.TZ.TechZone.repositories.AuditLogRepository;
 import com.TZ.TechZone.repositories.RoleRepository;
 import com.TZ.TechZone.repositories.UserRepository;
 import com.TZ.TechZone.security.JwtTokenProvider;
 import com.TZ.TechZone.security.UserPrincipal;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,6 +47,9 @@ public class AuthController {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private AuditLogRepository auditLogRepository;
 
     /**
      * Endpoint d'inscription
@@ -82,9 +88,15 @@ public class AuthController {
     /**
      * Endpoint de connexion
      * POST /api/auth/login
+     * Enregistre LOGIN_SUCCESS ou LOGIN_FAILED dans les audit logs.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest,
+                                              HttpServletRequest request) {
+        String ipAddress = getClientIp(request);
+        String userAgent = request.getHeader("User-Agent");
+        if (userAgent == null) userAgent = "";
+
         try {
             // Authentifier l'utilisateur
             Authentication authentication = authenticationManager.authenticate(
@@ -100,12 +112,42 @@ public class AuthController {
             // Générer le JWT token
             String jwt = tokenProvider.generateToken(authentication);
 
+            // Log structuré : connexion réussie
+            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            User user = userRepository.findById(principal.getId()).orElse(null);
+            AuditLog log = new AuditLog();
+            log.setAction(AuditLog.AuditAction.LOGIN_SUCCESS);
+            log.setEntityType(AuditLog.AuditEntity.USER);
+            log.setEntityId(user != null ? user.getId() : null);
+            log.setUser(user);
+            log.setIpAddress(ipAddress);
+            log.setUserAgent(userAgent);
+            auditLogRepository.save(log);
+
             return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
         } catch (Exception e) {
+            // Log structuré : échec de connexion (pas de user, email dans payload)
+            AuditLog log = new AuditLog();
+            log.setAction(AuditLog.AuditAction.LOGIN_FAILED);
+            log.setEntityType(AuditLog.AuditEntity.USER);
+            log.setUser(null);
+            log.setIpAddress(ipAddress);
+            log.setUserAgent(userAgent);
+            log.setPayload("email=" + loginRequest.getEmail());
+            auditLogRepository.save(log);
+
             return ResponseEntity
                     .badRequest()
                     .body(new ApiResponse(false, "Email ou mot de passe incorrect"));
         }
+    }
+
+    private String getClientIp(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        return request.getRemoteAddr() != null ? request.getRemoteAddr() : "";
     }
 
     /**

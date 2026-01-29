@@ -5,7 +5,6 @@
   <th:block th:fragment="main">
     <div class="max-w-3xl mx-auto">
       <h1 class="text-2xl font-bold text-neutral-900 mb-6">Panier</h1>
-      <p th:if="${message}" class="mb-4 p-3 bg-amber-50 text-amber-800 rounded-lg text-sm" th:text="${message}"></p>
       <div th:if="${cart == null or cart.items == null or cart.items.isEmpty()}" class="py-8 text-neutral-600">
         Votre panier est vide. <a th:href="@{/app/shop}" class="text-brand-600 hover:text-brand-700">Voir le catalogue</a>.
       </div>
@@ -19,8 +18,8 @@
             <div class="flex items-center gap-2">
               <span class="text-sm text-neutral-600">Qté : <span th:text="${item.quantity}">1</span></span>
               <span class="font-semibold" th:text="${#numbers.formatDecimal(item.lineTotal, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</span>
-              <form th:action="@{/app/shop/cart/remove/{id}(id=${item.productId})}" method="post" class="inline">
-                <button type="submit" class="text-sm text-red-600 hover:text-red-700 cursor-pointer">Retirer</button>
+              <form th:action="@{/app/shop/cart/remove/{id}(id=${item.productId})}" method="post" class="inline" onsubmit="return confirm('Retirer cet article du panier ?');">
+                <button type="submit" class="text-sm text-red-600 hover:text-red-700 cursor-pointer" aria-label="Retirer du panier">Retirer</button>
               </form>
             </div>
           </li>

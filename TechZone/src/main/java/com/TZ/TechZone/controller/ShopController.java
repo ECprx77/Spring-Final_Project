@@ -59,6 +59,7 @@ public class ShopController {
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) Boolean promo,
             @RequestParam(required = false) Boolean inStock,
+            @RequestParam(required = false) String q,
             @RequestParam(defaultValue = "name") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             Model model) {
@@ -70,7 +71,10 @@ public class ShopController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
         Page<ProductDTO> productPage;
-        if (Boolean.TRUE.equals(promo)) {
+        if (q != null && !q.isBlank()) {
+            productPage = productService.searchProducts(q.trim(), pageable);
+            model.addAttribute("searchQuery", q.trim());
+        } else if (Boolean.TRUE.equals(promo)) {
             productPage = productService.getPromoProducts(pageable);
             model.addAttribute("filterPromo", true);
         } else if (Boolean.TRUE.equals(inStock)) {
@@ -110,11 +114,14 @@ public class ShopController {
     }
 
     @GetMapping("/shop/cart")
-    public String cart(Model model, RedirectAttributes redirectAttributes) {
+    public String cart(@RequestParam(required = false) String added, Model model, RedirectAttributes redirectAttributes) {
         Integer userId = getCurrentUserId();
         if (userId == null) {
             redirectAttributes.addFlashAttribute("message", "Connectez-vous pour accéder au panier.");
             return "redirect:/app/login";
+        }
+        if ("1".equals(added)) {
+            model.addAttribute("orderSuccess", "Produit ajouté au panier.");
         }
         CartDTO cart = cartService.getCart(userId);
         model.addAttribute("pageTitle", "Panier");

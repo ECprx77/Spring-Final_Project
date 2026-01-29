@@ -15,9 +15,15 @@
         <span>Total</span>
         <span class="text-brand-600" th:text="${cart.total != null ? #numbers.formatDecimal(cart.total, 1, 'COMMA', 2, 'POINT') + ' €' : '0,00 €'}">0,00 €</span>
       </div>
-      <form th:action="@{/app/shop/checkout}" method="post">
-        <button type="submit" class="w-full py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition">Confirmer la commande</button>
+      <form th:action="@{/app/shop/checkout}" method="post" id="checkout-form">
+        <button type="submit" id="checkout-btn" class="w-full py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition disabled:opacity-70 disabled:cursor-not-allowed" aria-label="Confirmer la commande">Confirmer la commande</button>
       </form>
+      <script th:inline="javascript">
+        document.getElementById('checkout-form')?.addEventListener('submit', function() {
+          var btn = document.getElementById('checkout-btn');
+          if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
+        });
+      </script>
       <a th:href="@{/app/shop/cart}" class="block mt-4 text-center text-sm text-neutral-600 hover:text-neutral-900">Retour au panier</a>
     </div>
   </th:block>

@@ -48,9 +48,9 @@
           body: body,
           credentials: 'same-origin'
         }).then(function(r) {
-          if (r.ok) { alert('Ajouté au panier'); window.location.href = /*[[@{/app/shop/cart}]]*/ ''; }
-          else { alert('Erreur'); }
-        }).catch(function() { alert('Erreur'); });
+          if (r.ok) { window.location.href = /*[[@{/app/shop/cart}]]*/ '' + '?added=1'; }
+          else { alert('Erreur lors de l\'ajout au panier.'); }
+        }).catch(function() { alert('Erreur lors de l\'ajout au panier.'); });
       });
     </script>
   </th:block>

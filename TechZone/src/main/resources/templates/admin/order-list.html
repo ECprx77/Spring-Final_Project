@@ -5,7 +5,9 @@
   <th:block th:fragment="main">
     <div class="max-w-6xl mx-auto">
       <h1 class="text-2xl font-bold text-neutral-900 mb-6">Commandes</h1>
-      <p th:if="${message}" class="mb-4 p-3 bg-green-50 text-green-800 rounded-lg text-sm" th:text="${message}"></p>
+      <p class="mb-4">
+        <a th:href="@{/app/admin/orders/export}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition" download>Export CSV</a>
+      </p>
       <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
         <table class="min-w-full divide-y divide-neutral-200">
           <thead class="bg-neutral-50">

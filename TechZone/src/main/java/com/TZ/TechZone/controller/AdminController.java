@@ -3,6 +3,8 @@ package com.TZ.TechZone.controller;
 import com.TZ.TechZone.dto.CategoryDTO;
 import com.TZ.TechZone.dto.OrderDTO;
 import com.TZ.TechZone.dto.ProductDTO;
+import com.TZ.TechZone.entities.AuditLog;
+import com.TZ.TechZone.repositories.AuditLogRepository;
 import com.TZ.TechZone.services.CategoryService;
 import com.TZ.TechZone.services.OrderService;
 import com.TZ.TechZone.services.ProductImageService;
@@ -22,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 @Controller
 @RequestMapping("/app")
@@ -38,6 +42,9 @@ public class AdminController {
 
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private AuditLogRepository auditLogRepository;
 
     @GetMapping("/admin")
     public String dashboard(Model model) {
@@ -288,5 +295,68 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/app/admin/orders/" + id;
+    }
+
+    // ---------- Audit logs ----------
+    @GetMapping("/admin/audit")
+    public String auditList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String action,
+            @RequestParam(required = false) String entityType,
+            Model model) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<AuditLog> auditPage;
+        if (action != null && !action.isBlank()) {
+            try {
+                AuditLog.AuditAction act = AuditLog.AuditAction.valueOf(action.trim());
+                auditPage = auditLogRepository.findByAction(act, pageable);
+            } catch (IllegalArgumentException e) {
+                auditPage = auditLogRepository.findAll(pageable);
+            }
+        } else if (entityType != null && !entityType.isBlank()) {
+            try {
+                AuditLog.AuditEntity et = AuditLog.AuditEntity.valueOf(entityType.trim());
+                auditPage = auditLogRepository.findByEntityType(et, pageable);
+            } catch (IllegalArgumentException e) {
+                auditPage = auditLogRepository.findAll(pageable);
+            }
+        } else {
+            auditPage = auditLogRepository.findAll(pageable);
+        }
+        model.addAttribute("pageTitle", "Journaux d'audit");
+        model.addAttribute("auditPage", auditPage);
+        model.addAttribute("filterAction", action);
+        model.addAttribute("filterEntityType", entityType);
+        model.addAttribute("auditActions", AuditLog.AuditAction.values());
+        model.addAttribute("auditEntities", AuditLog.AuditEntity.values());
+        return "admin/audit";
+    }
+
+    // ---------- Export commandes CSV ----------
+    @GetMapping("/admin/orders/export")
+    public ResponseEntity<byte[]> exportOrdersCsv() {
+        Pageable pageable = PageRequest.of(0, 10_000, Sort.by(Sort.Direction.DESC, "orderDate"));
+        Page<OrderDTO> orderPage = orderService.getAllOrders(pageable);
+        StringWriter sw = new StringWriter();
+        sw.write("id;date;client_email;client_nom;statut;total\n");
+        for (OrderDTO o : orderPage.getContent()) {
+            String email = o.getUser() != null ? o.getUser().getEmail() : "";
+            String name = o.getUser() != null ? o.getUser().getFullName() : "";
+            if (name != null && name.contains(";")) name = "\"" + name.replace("\"", "\"\"") + "\"";
+            if (email != null && email.contains(";")) email = "\"" + email.replace("\"", "\"\"") + "\"";
+            sw.write(o.getId() + ";");
+            sw.write(o.getOrderDate() != null ? o.getOrderDate().toString() : "");
+            sw.write(";" + (email != null ? email : "") + ";");
+            sw.write((name != null ? name : "") + ";");
+            sw.write((o.getStatus() != null ? o.getStatus() : "") + ";");
+            sw.write(o.getTotal() != null ? o.getTotal().toString().replace('.', ',') : "");
+            sw.write("\n");
+        }
+        byte[] bytes = sw.toString().getBytes(StandardCharsets.UTF_8);
+        return ResponseEntity.ok()
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"commandes.csv\"")
+                .contentType(org.springframework.http.MediaType.parseMediaType("text/csv; charset=UTF-8"))
+                .body(bytes);
     }
 }
