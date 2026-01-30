@@ -100,6 +100,26 @@ public class ShopController {
         return "shop/product-detail";
     }
 
+    @PostMapping("/shop/cart/add")
+    public String addToCart(
+            @RequestParam Integer productId,
+            @RequestParam(defaultValue = "1") int quantity,
+            RedirectAttributes redirectAttributes) {
+        Integer userId = getCurrentUserId();
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("message", "Connectez-vous pour ajouter au panier.");
+            return "redirect:/app/login";
+        }
+        if (quantity < 1) quantity = 1;
+        try {
+            cartService.addItem(userId, productId, quantity);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Impossible d'ajouter ce produit au panier.");
+            return "redirect:/app/shop";
+        }
+        return "redirect:/app/shop/cart?added=1";
+    }
+
     @PostMapping("/shop/cart/remove/{productId}")
     public String removeFromCart(@PathVariable Integer productId, RedirectAttributes redirectAttributes) {
         Integer userId = getCurrentUserId();

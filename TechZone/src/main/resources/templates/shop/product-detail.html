@@ -24,7 +24,7 @@
           <p class="text-2xl font-semibold text-accent-400 mt-3" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT') + ' €'}">0,00 €</p>
           <p class="text-slate-400 mt-4 flex-1" th:text="${product.description}">Description</p>
           <div th:if="${user != null}" class="mt-6">
-            <form th:if="${product.status == 'en_stock'}" th:action="@{/cart/add}" method="post" class="flex items-center gap-2" id="addToCartForm">
+            <form th:if="${product.status == 'en_stock'}" th:action="@{/app/shop/cart/add}" method="post" class="flex items-center gap-2">
               <input type="hidden" name="productId" th:value="${product.id}"/>
               <input type="hidden" name="quantity" value="1"/>
               <button type="submit" class="px-6 py-3 bg-accent-600 text-white font-medium rounded-lg hover:bg-accent-500 transition-colors duration-200">Ajouter au panier</button>
@@ -37,22 +37,6 @@
         </div>
       </article>
     </div>
-    <script th:inline="javascript">
-      document.getElementById('addToCartForm') && document.getElementById('addToCartForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var form = e.target;
-        var body = JSON.stringify({ productId: parseInt(form.productId.value), quantity: parseInt(form.quantity.value) || 1 });
-        fetch(/*[[@{/cart/add}]]*/ '', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-          body: body,
-          credentials: 'same-origin'
-        }).then(function(r) {
-          if (r.ok) { window.location.href = /*[[@{/app/shop/cart}]]*/ '' + '?added=1'; }
-          else { alert('Erreur lors de l\'ajout au panier.'); }
-        }).catch(function() { alert('Erreur lors de l\'ajout au panier.'); });
-      });
-    </script>
   </th:block>
 </body>
 </html>
