@@ -18,10 +18,10 @@ The product images system has been implemented with local file storage. Images a
    - Max file size: 5MB
 
 3. **API Endpoints**
-   - `POST /api/products/{productId}/images` - Upload image (ADMIN)
-   - `GET /api/products/{productId}/images` - List product images (PUBLIC)
-   - `DELETE /api/products/images/{imageId}` - Delete image (ADMIN)
-   - `PUT /api/products/images/{imageId}/primary` - Set primary image (ADMIN)
+   - `POST /api/admin/products/{productId}/images` - Upload image (ADMIN)
+   - `GET /api/admin/products/{productId}/images` - List product images (PUBLIC)
+   - `DELETE /api/admin/products/images/{imageId}` - Delete image (ADMIN)
+   - `PUT /api/admin/products/images/{imageId}/primary` - Set primary image (ADMIN)
 
 4. **Product DTO Enhancement**
    - ProductDTO now includes `images` list
@@ -87,7 +87,7 @@ Note the product ID from the response.
 convert -size 200x200 xc:blue test-image.jpg
 
 # Upload the image
-curl -X POST http://localhost:8080/api/products/1/images \
+curl -X POST http://localhost:8080/api/admin/products/1/images \
   -H "Authorization: Bearer $TOKEN" \
   -F "file=@test-image.jpg" \
   -F "isPrimary=true"
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8080/api/products/1/images \
 ### 6. List Product Images
 
 ```bash
-curl http://localhost:8080/api/products/1/images
+curl http://localhost:8080/api/admin/products/1/images
 ```
 
 ### 7. Get Product with Images
@@ -110,20 +110,20 @@ The response should include an `images` array with image URLs.
 ### 8. Set Primary Image (if you have multiple)
 
 ```bash
-curl -X PUT http://localhost:8080/api/products/images/2/primary \
+curl -X PUT http://localhost:8080/api/admin/products/images/2/primary \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### 9. Delete an Image
 
 ```bash
-curl -X DELETE http://localhost:8080/api/products/images/1 \
+curl -X DELETE http://localhost:8080/api/admin/products/images/1 \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### 10. Access Uploaded Image
 
-Open in browser: `http://localhost:8080/api/uploads/products/{filename}`
+Open in browser: `http://localhost:8080/uploads/products/{filename}`
 
 ## Configuration
 
