@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "techzone-api-collection",
 		"name": "TechZone E-commerce API",
-		"description": "Complete API collection for TechZone e-commerce platform. Includes authentication, product management, shopping cart, and order processing.\n\n**Base URL**: http://localhost:8080/api\n\n**Authentication**: JWT Bearer Token\n\n**Test Accounts (Postman, distincts des tests Java)**:\n- User: créer avec « Register New User » puis utiliser « Login » (postman.newuser@techzone-test.com / PostmanNew123!)\n- Admin: postman.admin@techzone-test.com / PostmanAdmin123! (créé par setup-test-users.sh + promotion H2)\n\n**Setup**: \n1. Register or login to get JWT token\n2. Token is automatically saved to environment variable\n3. All authenticated requests use {{jwt_token}} variable",
+		"description": "Complete API collection for TechZone e-commerce platform. Includes authentication, product management, shopping cart, and order processing.\n\n**Base URL**: http://localhost:8080/api\n\n**Authentication**: JWT Bearer Token\n\n**Test Accounts (Postman, distincts des tests Java)**:\n- User: créer avec « Register New User » puis utiliser « Login » (postman.newuser@techzone-test.com / PostmanNew123!)\n- Admin: postman.admin@techzone-test.com / PostmanAdmin123! (créé au démarrage de l’app)\n\n**Setup**: \n1. Register or login to get JWT token\n2. Token is automatically saved to environment variable\n3. All authenticated requests use {{jwt_token}} variable",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"event": [

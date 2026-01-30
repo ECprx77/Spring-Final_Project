@@ -127,8 +127,8 @@ cd TechZone
 ```
 
 **Comptes dédiés Postman (distincts des tests Java)**:
-- **User** : créer avec la requête « Register New User » (postman.newuser@techzone-test.com / PostmanNew123!), puis utiliser « Login » avec les mêmes identifiants. Ne pas recréer ce compte dans le script pour éviter le conflit (email déjà existant).
-- **Admin** : postman.admin@techzone-test.com / PostmanAdmin123! (créé une fois par `./setup-test-users.sh` puis promotion en ADMIN dans H2)
+- **User** : créer avec la requête « Register New User » (postman.newuser@techzone-test.com / PostmanNew123!), puis utiliser « Login » avec les mêmes identifiants.
+- **Admin** : postman.admin@techzone-test.com / PostmanAdmin123! (créé automatiquement au démarrage de l’app, rôle ADMIN)
 
 ### Manual Token Usage
 

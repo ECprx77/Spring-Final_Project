@@ -10,7 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * Crée un compte admin de test au démarrage si absent (admin@test.com / admin123).
+ * Crée des comptes admin de test au démarrage si absents :
+ * - admin@test.com / admin123 (tests manuels)
+ * - postman.admin@techzone-test.com / PostmanAdmin123! (Collection Postman Runner)
  */
 @Component
 public class AdminDataLoader implements ApplicationRunner {
@@ -27,14 +29,25 @@ public class AdminDataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        if (userRepository.existsByEmail("admin@test.com")) return;
         Role adminRole = roleRepository.findByName("ADMIN")
                 .orElseThrow(() -> new IllegalStateException("Rôle ADMIN introuvable"));
-        User admin = new User();
-        admin.setEmail("admin@test.com");
-        admin.setFullName("Admin");
-        admin.setPasswordHash(passwordEncoder.encode("admin123"));
-        admin.setRole(adminRole);
-        userRepository.save(admin);
+
+        if (!userRepository.existsByEmail("admin@test.com")) {
+            User admin = new User();
+            admin.setEmail("admin@test.com");
+            admin.setFullName("Admin");
+            admin.setPasswordHash(passwordEncoder.encode("admin123"));
+            admin.setRole(adminRole);
+            userRepository.save(admin);
+        }
+
+        if (!userRepository.existsByEmail("postman.admin@techzone-test.com")) {
+            User postmanAdmin = new User();
+            postmanAdmin.setEmail("postman.admin@techzone-test.com");
+            postmanAdmin.setFullName("Postman Test Admin");
+            postmanAdmin.setPasswordHash(passwordEncoder.encode("PostmanAdmin123!"));
+            postmanAdmin.setRole(adminRole);
+            userRepository.save(postmanAdmin);
+        }
     }
 }
