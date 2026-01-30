@@ -118,7 +118,7 @@ public class AuthViewController {
     public String logout(HttpServletResponse response) {
         SecurityContextHolder.clearContext();
         Cookie cookie = new Cookie(TOKEN_COOKIE_NAME, "");
-        cookie.setPath("/api");
+        cookie.setPath("/"); // Même path que lors de la création
         cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
@@ -127,7 +127,7 @@ public class AuthViewController {
 
     private void addTokenCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie(TOKEN_COOKIE_NAME, token);
-        cookie.setPath("/api"); // même préfixe que server.servlet.context-path
+        cookie.setPath("/"); // Disponible pour toutes les routes (/api et /app)
         cookie.setMaxAge(COOKIE_MAX_AGE_SECONDS);
         cookie.setHttpOnly(true);
         cookie.setSecure(false); // true en HTTPS
