@@ -73,6 +73,16 @@ curl -s -X POST "$API_URL/auth/register" \
   }' | jq -r '.message'
 
 echo ""
+echo "6. Registering postman.admin@techzone-test.com (Postman Runner, rôle ADMIN à définir en H2)..."
+curl -s -X POST "$API_URL/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "postman.admin@techzone-test.com",
+    "fullName": "Postman Test Admin",
+    "password": "PostmanAdmin123!"
+  }' | jq -r '.message'
+
+echo ""
 echo "✅ All users registered!"
 echo ""
 echo "⚠️  IMPORTANT: To make admin accounts work, you need to promote them:"
@@ -85,14 +95,19 @@ echo ""
 echo "2. Run these SQL commands:"
 echo "   UPDATE users SET role_id = 1 WHERE email = 'admin@techzone.com';"
 echo "   UPDATE users SET role_id = 1 WHERE email = 'admin2@techzone.com';"
+echo "   UPDATE users SET role_id = 1 WHERE email = 'postman.admin@techzone-test.com';"
 echo ""
 echo "3. Verify:"
 echo "   SELECT email, full_name, role_id FROM users;"
 echo ""
-echo "📋 Test Credentials:"
+echo "📋 Test Credentials (Java / manuel):"
 echo "   ADMIN: admin@techzone.com / Admin123!"
 echo "   ADMIN: admin2@techzone.com / Admin123!"
 echo "   USER:  user1@techzone.com / User123!"
 echo "   USER:  user2@techzone.com / User123!"
 echo "   USER:  user3@techzone.com / User123!"
+echo ""
+echo "📋 Test Credentials (Postman Runner):"
+echo "   USER:  créer avec la requête « Register New User » (postman.newuser@techzone-test.com)"
+echo "   ADMIN: postman.admin@techzone-test.com / PostmanAdmin123! (créé par ce script + promotion H2)"
 echo ""

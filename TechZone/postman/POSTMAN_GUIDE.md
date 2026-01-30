@@ -126,9 +126,9 @@ cd TechZone
 ./setup-test-users.sh
 ```
 
-**Pre-configured accounts**:
-- **User**: user@techzone.com / User123!
-- **Admin**: admin@techzone.com / Admin123!
+**Comptes dédiés Postman (distincts des tests Java)**:
+- **User** : créer avec la requête « Register New User » (postman.newuser@techzone-test.com / PostmanNew123!), puis utiliser « Login » avec les mêmes identifiants. Ne pas recréer ce compte dans le script pour éviter le conflit (email déjà existant).
+- **Admin** : postman.admin@techzone-test.com / PostmanAdmin123! (créé une fois par `./setup-test-users.sh` puis promotion en ADMIN dans H2)
 
 ### Manual Token Usage
 
@@ -150,7 +150,7 @@ If auto-save doesn't work:
    - Run: `Search Products` (query: "laptop")
 
 2. **Login as User**
-   - Run: `Login` (user@techzone.com)
+   - Run: `Register New User` une fois, puis `Login` (postman.newuser@techzone-test.com)
    - Token auto-saved ✅
 
 3. **Add to Cart**
@@ -169,7 +169,7 @@ If auto-save doesn't work:
 ### Workflow 2: Admin Product Management
 
 1. **Login as Admin**
-   - Run: `Login as Admin` (admin@techzone.com)
+   - Run: `Login as Admin` (postman.admin@techzone-test.com)
    - Admin token saved ✅
 
 2. **Manage Products**
@@ -305,10 +305,10 @@ GET /api/products/category/1        # Category filter
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `test_user_email` | Test user email | user@techzone.com |
-| `test_user_password` | Test user password | User123! |
-| `test_admin_email` | Test admin email | admin@techzone.com |
-| `test_admin_password` | Test admin password | Admin123! |
+| `test_user_email` | Test user email (créé par Register New User) | postman.newuser@techzone-test.com |
+| `test_user_password` | Test user password | PostmanNew123! |
+| `test_admin_email` | Test admin email (Postman) | postman.admin@techzone-test.com |
+| `test_admin_password` | Test admin password | PostmanAdmin123! |
 
 ---
 
@@ -400,7 +400,7 @@ Use `{{$randomInt}}`, `{{$guid}}`, etc. for generating test data.
 **Solution**:
 - Endpoint requires ADMIN role
 - Login as admin using "Login as Admin" request
-- Verify you're using `admin@techzone.com` account
+- Verify you're using `postman.admin@techzone-test.com` account
 
 ### Issue: 404 Not Found
 

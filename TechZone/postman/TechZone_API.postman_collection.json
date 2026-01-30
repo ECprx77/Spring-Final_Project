@@ -2,9 +2,26 @@
 	"info": {
 		"_postman_id": "techzone-api-collection",
 		"name": "TechZone E-commerce API",
-		"description": "Complete API collection for TechZone e-commerce platform. Includes authentication, product management, shopping cart, and order processing.\n\n**Base URL**: http://localhost:8080/api\n\n**Authentication**: JWT Bearer Token\n\n**Test Accounts**:\n- Admin: admin@techzone.com / Admin123!\n- User: user@techzone.com / User123!\n\n**Setup**: \n1. Register or login to get JWT token\n2. Token is automatically saved to environment variable\n3. All authenticated requests use {{jwt_token}} variable",
+		"description": "Complete API collection for TechZone e-commerce platform. Includes authentication, product management, shopping cart, and order processing.\n\n**Base URL**: http://localhost:8080/api\n\n**Authentication**: JWT Bearer Token\n\n**Test Accounts (Postman, distincts des tests Java)**:\n- User: créer avec « Register New User » puis utiliser « Login » (postman.newuser@techzone-test.com / PostmanNew123!)\n- Admin: postman.admin@techzone-test.com / PostmanAdmin123! (créé par setup-test-users.sh + promotion H2)\n\n**Setup**: \n1. Register or login to get JWT token\n2. Token is automatically saved to environment variable\n3. All authenticated requests use {{jwt_token}} variable",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
+	"event": [
+		{
+			"listen": "test",
+			"script": {
+				"exec": [
+					"pm.test('Réponse reçue (statut 2xx)', function() {",
+					"    pm.expect(pm.response.code).to.be.within(200, 299);",
+					"});",
+					"",
+					"pm.test('Temps de réponse acceptable (< 10s)', function() {",
+					"    pm.expect(pm.response.responseTime).to.be.below(10000);",
+					"});"
+				],
+				"type": "text/javascript"
+			}
+		}
+	],
 	"item": [
 		{
 			"name": "Authentication",
@@ -37,7 +54,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"fullName\": \"New User\"\n}"
+							"raw": "{\n  \"email\": \"postman.newuser@techzone-test.com\",\n  \"password\": \"PostmanNew123!\",\n  \"fullName\": \"Postman New User\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/register",
@@ -76,7 +93,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"user@techzone.com\",\n  \"password\": \"User123!\"\n}"
+							"raw": "{\n  \"email\": \"postman.newuser@techzone-test.com\",\n  \"password\": \"PostmanNew123!\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
@@ -116,7 +133,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"admin@techzone.com\",\n  \"password\": \"Admin123!\"\n}"
+							"raw": "{\n  \"email\": \"postman.admin@techzone-test.com\",\n  \"password\": \"PostmanAdmin123!\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
@@ -958,26 +975,6 @@
 				}
 			],
 			"description": "Order management endpoints. User endpoints are user-scoped, admin endpoints access all orders."
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
 		}
 	],
 	"variable": [
