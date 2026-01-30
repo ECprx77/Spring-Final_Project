@@ -191,7 +191,15 @@ public class AuthController {
     public ResponseEntity<?> refreshToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (authentication == null || !authentication.isAuthenticated() ||
+            authentication.getPrincipal() == null ||
+            "anonymousUser".equals(authentication.getPrincipal().toString())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse(false, "Utilisateur non authentifié"));
+        }
+
+        if (!(authentication.getPrincipal() instanceof UserPrincipal)) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(new ApiResponse(false, "Utilisateur non authentifié"));

@@ -66,9 +66,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
         if (path == null) path = request.getRequestURI();
-        // Skip le filtrage pour les URLs publiques (API, Swagger, H2, racine)
-        if (path.contains("/auth/") ||
-            path.contains("/swagger-ui") ||
+        // Ne skip que login et register (pour que /api/auth/me, /api/auth/refresh-token, /api/auth/logout reçoivent le JWT)
+        if ("/api/auth/login".equals(path) || "/api/auth/register".equals(path)) {
+            return true;
+        }
+        if (path.contains("/swagger-ui") ||
             path.contains("/v3/api-docs") ||
             path.contains("/swagger-resources") ||
             path.contains("/h2-console") ||

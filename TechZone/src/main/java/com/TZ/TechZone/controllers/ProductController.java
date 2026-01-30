@@ -70,17 +70,37 @@ public class ProductController {
     }
 
     /**
-     * Recherche des produits (public)
-     * GET /api/products/search?q=laptop&page=0&size=10
+     * Alias pour Postman : produits par catégorie
+     * GET /api/products/category/{categoryId}?page=0&size=10
      */
-    @GetMapping("/products/search")
-    public ResponseEntity<Page<ProductDTO>> searchProducts(
-            @RequestParam String q,
+    @GetMapping("/products/category/{categoryId}")
+    public ResponseEntity<Page<ProductDTO>> getProductsByCategoryAlias(
+            @PathVariable Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDTO> products = productService.searchProducts(q, pageable);
+        Page<ProductDTO> products = productService.getProductsByCategory(categoryId, pageable);
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * Recherche des produits (public)
+     * GET /api/products/search?query=laptop ou ?q=laptop&page=0&size=10
+     */
+    @GetMapping("/products/search")
+    public ResponseEntity<Page<ProductDTO>> searchProducts(
+            @RequestParam(value = "query", required = false) String queryParam,
+            @RequestParam(value = "q", required = false) String qParam,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        String query = queryParam != null ? queryParam : qParam;
+        if (query == null || query.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDTO> products = productService.searchProducts(query.trim(), pageable);
         return ResponseEntity.ok(products);
     }
 
@@ -91,6 +111,20 @@ public class ProductController {
     @GetMapping("/products/promo")
     public ResponseEntity<List<ProductDTO>> getPromoProducts() {
         List<ProductDTO> products = productService.getPromoProducts();
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * Récupère les produits en promotion avec pagination (public, alias Postman)
+     * GET /api/products/promo/list?page=0&size=10
+     */
+    @GetMapping("/products/promo/list")
+    public ResponseEntity<Page<ProductDTO>> getPromoProductsList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDTO> products = productService.getPromoProducts(pageable);
         return ResponseEntity.ok(products);
     }
 

@@ -5,6 +5,7 @@ import com.TZ.TechZone.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -147,6 +148,22 @@ public class GlobalExceptionHandler {
         body.put("message", "Utilisez Content-Type: application/json et un corps JSON (ex. {\"name\":\"Ma catégorie\", \"description\":\"...\"}).");
 
         return new ResponseEntity<>(body, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    /**
+     * Gère les violations de contrainte (ex. suppression catégorie avec produits)
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex,
+            WebRequest request) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Argument invalide");
+        body.put("message", "Impossible de supprimer cette ressource : des données y sont encore rattachées.");
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     /**

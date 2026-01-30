@@ -5,10 +5,14 @@ import com.TZ.TechZone.entities.Category;
 import com.TZ.TechZone.exceptions.ResourceNotFoundException;
 import com.TZ.TechZone.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +26,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Crée une nouvelle catégorie
@@ -97,13 +104,19 @@ public class CategoryService {
     }
 
     /**
-     * Supprime une catégorie
+     * Supprime une catégorie (échoue avec 400 si des produits y sont rattachés)
      */
     public void deleteCategory(Integer id) {
         if (!categoryRepository.existsById(id)) {
             throw new ResourceNotFoundException("Catégorie non trouvée avec l'ID: " + id);
         }
-        categoryRepository.deleteById(id);
+        try {
+            categoryRepository.deleteById(id);
+            entityManager.flush();
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException(
+                    "Impossible de supprimer cette catégorie : des produits y sont encore rattachés.");
+        }
     }
 
     /**
